@@ -13,6 +13,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
 
+/*
+ * This example is using the deprecated API for the Orientation sensor.
+ */
+
 public class Pitch extends Activity {
 	
     private SensorManager myManager;
