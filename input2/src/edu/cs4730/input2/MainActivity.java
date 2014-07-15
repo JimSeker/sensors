@@ -1,7 +1,7 @@
 package edu.cs4730.input2;
 
 import android.os.Bundle;
-import android.app.Activity;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.GestureDetectorCompat;
 import android.view.GestureDetector.OnGestureListener;
 import android.util.Log;
@@ -22,9 +22,11 @@ import android.widget.Toast;
  *  
  *  Also overriding the default onKeyDown()  for the activity, this maybe not be good idea
  *  if there are widgets that also need the key events such as a EditText.
+ *  
+ *  Overriding the backbuttonpressed as well.  it just calls finish().
  */
 
-public class MainActivity extends Activity implements  OnGestureListener, OnDoubleTapListener {
+public class MainActivity extends FragmentActivity implements  OnGestureListener, OnDoubleTapListener {
 
 	private static final String DEBUG_TAG = "Gestures";
 	private GestureDetectorCompat mDetector; 
@@ -35,13 +37,19 @@ public class MainActivity extends Activity implements  OnGestureListener, OnDoub
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
+ 
+		if (savedInstanceState == null) {
+			getSupportFragmentManager().beginTransaction()
+					.add(R.id.container, new MainFragment()).commit();
+		}
+		
+		
 		// Instantiate the gesture detector with the
 		// application context and an implementation of
 		// GestureDetector.OnGestureListener
 		mDetector = new GestureDetectorCompat(this,this);
-		// Set the gesture detector as the double tap
-		// listener.
+		// Also Set the gesture detector as the double tap
+		// listener.  See the overrides below for which events comes from which.
 		mDetector.setOnDoubleTapListener(this);
 
 
@@ -53,7 +61,13 @@ public class MainActivity extends Activity implements  OnGestureListener, OnDoub
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
-
+    /*
+     * (non-Javadoc)
+     * @see android.support.v4.app.FragmentActivity#onKeyDown(int, android.view.KeyEvent)
+     * 
+     * Keyevent that comes from the activity.
+     */
+	
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 
@@ -63,17 +77,51 @@ public class MainActivity extends Activity implements  OnGestureListener, OnDoub
 			Toast.makeText(getApplicationContext(), "onKeyDown: " + key, Toast.LENGTH_SHORT).show();
 			return true;
 		} 
-
-		return false;
+		//allow the system to deal with the events we do not, like all the rest of the buttons.
+		return super.onKeyDown(keyCode, event);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see android.support.v4.app.FragmentActivity#onBackPressed()
+	 * 
+	 * 
+	 * This is really not recommended by well anyone.  You are change the default function of the device.
+	 * users really hate when you do that.  
+	 */
+			
+	@Override
+	public void onBackPressed() {
+		// do something on back.
+		Log.d(DEBUG_TAG,"onBackPressed: it was pushed."); 
+		Toast.makeText(getApplicationContext(), "onBackPressed: it was pushed.", Toast.LENGTH_SHORT).show();
+		
+		finish();  //we have to manually end the program, since we captured the backup button.
+	return;
+	}
+	/*
+	 * (non-Javadoc)
+	 * @see android.app.Activity#onTouchEvent(android.view.MotionEvent)
+	 * 
+	 * touch event that comes from he activity.  
+	 */
+	
 	@Override 
 	public boolean onTouchEvent(MotionEvent event){ 
 		this.mDetector.onTouchEvent(event);
-		// Be sure to call the superclass implementation
+         //log it, but no toast here.
+		Log.d(DEBUG_TAG,"onTouchEvent: " + event.toString()); 
+		// Be sure to call the superclass implementation, since we are not handling anything here.
 		return super.onTouchEvent(event);
 	}
 
+	
+	/*
+	 * (non-Javadoc)
+	 * @see android.view.GestureDetector.OnGestureListener#onDown(android.view.MotionEvent)
+	 * 
+	 * overridden from the OnGuestureListener.
+	 */
 	@Override
 	public boolean onDown(MotionEvent event) { 
 		Log.d(DEBUG_TAG,"onDown: " + event.toString()); 
@@ -81,6 +129,12 @@ public class MainActivity extends Activity implements  OnGestureListener, OnDoub
 		return true;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see android.view.GestureDetector.OnGestureListener#onFling(android.view.MotionEvent, android.view.MotionEvent, float, float)
+	 * 
+	 * overridden from the OnGuestureListener.
+	 */
 	@Override
 	public boolean onFling(MotionEvent event1, MotionEvent event2, 
 			float velocityX, float velocityY) {
@@ -89,12 +143,24 @@ public class MainActivity extends Activity implements  OnGestureListener, OnDoub
 		return true;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see android.view.GestureDetector.OnGestureListener#onLongPress(android.view.MotionEvent)
+	 * 
+	 * overridden from the OnGuestureListener.
+	 */
 	@Override
 	public void onLongPress(MotionEvent event) {
 		Toast.makeText(getApplicationContext(), "onLongPress: " + event.toString(), Toast.LENGTH_SHORT).show();
 		Log.d(DEBUG_TAG, "onLongPress: " + event.toString()); 
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see android.view.GestureDetector.OnGestureListener#onScroll(android.view.MotionEvent, android.view.MotionEvent, float, float)
+	 * 
+	 * overridden from the OnGuestureListener.
+	 */
 	@Override
 	public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
 			float distanceY) {
@@ -103,12 +169,24 @@ public class MainActivity extends Activity implements  OnGestureListener, OnDoub
 		return true;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see android.view.GestureDetector.OnGestureListener#onShowPress(android.view.MotionEvent)
+	 * 
+	 * overridden from the OnGuestureListener.
+	 */
 	@Override
 	public void onShowPress(MotionEvent event) {
 		Toast.makeText(getApplicationContext(), "onShowPress: " + event.toString(), Toast.LENGTH_SHORT).show();
 		Log.d(DEBUG_TAG, "onShowPress: " + event.toString());
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see android.view.GestureDetector.OnGestureListener#onSingleTapUp(android.view.MotionEvent)
+	 * 
+	 * overridden from the OnGuestureListener.
+	 */
 	@Override
 	public boolean onSingleTapUp(MotionEvent event) {
 		Toast.makeText(getApplicationContext(), "onSingleTapUp: " + event.toString(), Toast.LENGTH_SHORT).show();
@@ -116,6 +194,12 @@ public class MainActivity extends Activity implements  OnGestureListener, OnDoub
 		return true;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see android.view.GestureDetector.OnDoubleTapListener#onDoubleTap(android.view.MotionEvent)
+	 * 
+	 * overridden from the OnDoubleTapListener
+	 */
 	@Override
 	public boolean onDoubleTap(MotionEvent event) {
 		Toast.makeText(getApplicationContext(), "onDoubleTap: " + event.toString(), Toast.LENGTH_SHORT).show();
@@ -123,13 +207,25 @@ public class MainActivity extends Activity implements  OnGestureListener, OnDoub
 		return true;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see android.view.GestureDetector.OnDoubleTapListener#onDoubleTapEvent(android.view.MotionEvent)
+	 * 
+	 * overridden from the OnDoubleTapListener
+	 */
 	@Override
 	public boolean onDoubleTapEvent(MotionEvent event) {
 		Toast.makeText(getApplicationContext(), "onDoubleTapEvent: " + event.toString(), Toast.LENGTH_SHORT).show();
 		Log.d(DEBUG_TAG, "onDoubleTapEvent: " + event.toString());
 		return true;
 	}
-
+	
+	/*
+	 * (non-Javadoc)
+	 * @see android.view.GestureDetector.OnDoubleTapListener#onSingleTapConfirmed(android.view.MotionEvent)
+	 * 
+	 * overridden from the OnDoubleTapListener
+	 */
 	@Override
 	public boolean onSingleTapConfirmed(MotionEvent event) {
 		Toast.makeText(getApplicationContext(), "onSingleTapConfirmed: " + event.toString(), Toast.LENGTH_SHORT).show();
