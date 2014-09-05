@@ -19,10 +19,11 @@ import android.widget.TextView;
  * NOTE: This code is not perfect, nor indented to be.  It should only be used for fun with something very soft 
  * for the phone to land on.   It was only tested with a high of maybe foot and landed on very soft pillows.
  * 
- * USE AT YOUR OWN RISK OF BREAKING YOU DEVICE!
+ * USE AT YOUR OWN RISK OF BREAKING YOUR DEVICE!
  * 
  * some information was gotten here:
  * http://stackoverflow.com/questions/4848490/android-how-to-approach-fall-detection-algorithm
+ * 
  * This may also be useful, but I didn't use any it's code.
  * https://github.com/BharadwajS/Fall-detection-in-Android
  */
