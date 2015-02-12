@@ -21,7 +21,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 /**
- * A simple {@link Fragment} subclass.
+ * An example of how to access the touch, tap, double, and Gestures on the screen.
+ * Also how to get keys (hardware or software keyboard)
+ *
+ * The orientation sensor is also used, and yea, it's is depreciated.
  * 
  */
 public class MainFragment extends Fragment {

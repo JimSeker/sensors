@@ -1,9 +1,11 @@
 package edu.cs4730.input;
 
-import android.support.v4.app.FragmentActivity;
-import android.os.Bundle;
 
-public class MainActivity extends FragmentActivity {
+import android.support.v7.app.ActionBarActivity;
+import android.os.Bundle;
+//there is no code to see here.  Just the activity, which calls the fragment.
+
+public class MainActivity extends ActionBarActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

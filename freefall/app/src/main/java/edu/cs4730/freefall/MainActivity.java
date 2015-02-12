@@ -7,7 +7,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -30,7 +30,7 @@ import android.widget.TextView;
 
 
 
-public class MainActivity extends FragmentActivity implements SensorEventListener {
+public class MainActivity extends ActionBarActivity implements SensorEventListener {
 
 	private SensorManager mSensorManager;
 	private Sensor mSensor;
