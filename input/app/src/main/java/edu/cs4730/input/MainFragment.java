@@ -68,7 +68,7 @@ public class MainFragment extends Fragment {
     	mGestureDetector = new GestureDetector(getActivity().getApplicationContext(), new MyGestureDetector());
     	iv.setOnTouchListener(mGestureListener);
     	
-    	registerAccelerometer();
+    	//listeners for sensors are registered in onResume().
     	
     	return myView;
 		
@@ -80,9 +80,15 @@ public class MainFragment extends Fragment {
 	 */
 	@Override
 	public void onPause() {
-		unregisterAccelerometer();
+        unregisterAccelerometer();
+        super.onPause();
 	}
 
+    @Override
+    public void onResume() {
+        registerAccelerometer();
+        super.onResume();
+    }
 	
     class myKeyListener implements View.OnKeyListener {
 
