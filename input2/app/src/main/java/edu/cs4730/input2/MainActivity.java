@@ -2,7 +2,7 @@ package edu.cs4730.input2;
 
 import android.os.Bundle;
 import android.support.v4.view.GestureDetectorCompat;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.GestureDetector.OnGestureListener;
 import android.util.Log;
 import android.view.GestureDetector.OnDoubleTapListener;
@@ -26,7 +26,7 @@ import android.widget.Toast;
  *  Overriding the backbuttonpressed as well.  it just calls finish().
  */
 
-public class MainActivity extends ActionBarActivity implements  OnGestureListener, OnDoubleTapListener {
+public class MainActivity extends AppCompatActivity implements  OnGestureListener, OnDoubleTapListener {
 
 	private static final String DEBUG_TAG = "Gestures";
 	private GestureDetectorCompat mDetector; 

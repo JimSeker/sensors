@@ -2,13 +2,13 @@ package edu.cs4730.pitchroll;
 
 import java.util.List;
 
-import android.app.Activity;
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
@@ -17,7 +17,7 @@ import android.widget.TextView;
  * This example is using the deprecated API for the Orientation sensor.
  */
 
-public class Pitch extends Activity {
+public class MainActivity extends AppCompatActivity {
 	
     private SensorManager myManager;
     private Sensor accSensor;

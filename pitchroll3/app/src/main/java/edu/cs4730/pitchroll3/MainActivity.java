@@ -1,15 +1,11 @@
 package edu.cs4730.pitchroll3;
 
-
-import android.app.Activity;
-import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
@@ -20,7 +16,7 @@ import android.widget.TextView;
  * modified to remove the Orientation sensor that google dec in api 9.
  */
 
-public class MainActivity extends Activity implements SensorEventListener {
+public class MainActivity extends AppCompatActivity implements SensorEventListener {
 
 	private static final String TAG = "VirtualJax";
 	private SensorManager mgr;

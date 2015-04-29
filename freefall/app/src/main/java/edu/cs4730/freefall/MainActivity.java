@@ -7,7 +7,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -17,7 +17,7 @@ import android.widget.TextView;
  * so this is what this code attempts to do.  when the phone is falling, it will play a scream.
  * 
  * NOTE: This code is not perfect, nor indented to be.  It should only be used for fun with something very soft 
- * for the phone to land on.   It was only tested with a high of maybe foot and landed on very soft pillows.
+ * for the phone to land on.   It was only tested with a height of maybe foot and landed on very soft pillows.
  * 
  * USE AT YOUR OWN RISK OF BREAKING YOUR DEVICE!
  * 
@@ -30,7 +30,7 @@ import android.widget.TextView;
 
 
 
-public class MainActivity extends ActionBarActivity implements SensorEventListener {
+public class MainActivity extends AppCompatActivity implements SensorEventListener {
 
 	private SensorManager mSensorManager;
 	private Sensor mSensor;
