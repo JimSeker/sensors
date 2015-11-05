@@ -2,98 +2,136 @@ package edu.cs4730.gpsDemo;
 
 import java.util.List;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * this is a demo to show how to get location (ie gps) information from the device.
  * shows a listener changes and then just get the current (last known) information at the bottom.
- * 
+ * <p/>
  * if using the emulator, set the location in the emulator before running this code, otherwise
  * you may get errors or just really odd results.
  */
 public class MainFragment extends Fragment {
-	TextView output;
-	public MainFragment() {
-		// Required empty public constructor
-	}
+    TextView output;
+    /**
+     * Id to identify a Fine_Access permission request.
+     */
+    private static final int REQUEST_FINE_ACCESS = 0;
+    private static final int REQUEST_COURSE_ACCESS = 1;
+    static public String TAG = "MainFragment";
+    LocationManager myL;
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		// Inflate the layout for this fragment
-		View myView = inflater.inflate(R.layout.fragment_main, container, false);
+    public MainFragment() {
+        // Required empty public constructor
+    }
 
-		output = (TextView) myView.findViewById(R.id.TextView01);
-		output.append("\nNOTE, if you haven't told the Sim a location, there will be errors!\n");
-		LocationManager myL = (LocationManager) getActivity().getBaseContext().getSystemService(Context.LOCATION_SERVICE);
-		//in the activity use:
-		//LocationManager myL = (LocationManager) getBaseContext().getSystemService(Context.LOCATION_SERVICE);
-		//In other places may need to use (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
-		//add a location listener, here building on the fly.
-		myL.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0,
-				new LocationListener() {
-			@Override
-			public void onLocationChanged(Location location) {
-				//if we have location information, update the screen here.  just lat and lot, others
-				//are shown if you may need them.
-				if (location != null) {
-					output.append("\n onLocationChanged called");
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View myView = inflater.inflate(R.layout.fragment_main, container, false);
+
+        output = (TextView) myView.findViewById(R.id.TextView01);
+        output.append("\nNOTE, if you haven't told the Sim a location, there will be errors!\n");
+        myL = (LocationManager) getActivity().getBaseContext().getSystemService(Context.LOCATION_SERVICE);
+        //in the activity use:
+
+        startDemo();
+
+        return myView;
+    }
+
+    public void startDemo() {
+        //LocationManager myL = (LocationManager) getBaseContext().getSystemService(Context.LOCATION_SERVICE);
+        //In other places may need to use (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
+        //add a location listener, here building on the fly.
+
+        //first check to see if I have permissions (marshmallow) if I don't then ask, otherwise start up the demo.
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            //I'm on not explaining why, just asking for permission.
+            Log.v(TAG, "asking for permissions");
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                    REQUEST_COURSE_ACCESS);
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    REQUEST_FINE_ACCESS);
+
+        } else {
+            Log.v(TAG, "I have permissions");
+            myL.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0,
+                    new LocationListener() {
+                        @Override
+                        public void onLocationChanged(Location location) {
+                            //if we have location information, update the screen here.  just lat and lot, others
+                            //are shown if you may need them.
+                            if (location != null) {
+                                output.append("\n onLocationChanged called");
 					/*	        location.getAltitude();
-	    			        location.getLatitude();
+					        location.getLatitude();
 	    			        location.getLongitude();
 	    			        location.getTime();
 	    			        location.getAccuracy();
 	    			        location.getSpeed();
 	    			        location.getProvider();
 					 */
-					output.append("\n"+location.getLatitude() + " "+ location.getLongitude());
+                                output.append("\n" + location.getLatitude() + " " + location.getLongitude());
 
-				}
-			}
-			@Override
-			public void onProviderDisabled(String provider) {
+                            }
+                        }
 
-			}
-			@Override
-			public void onProviderEnabled(String provider) {
+                        @Override
+                        public void onProviderDisabled(String provider) {
 
+                        }
 
-			}
-			@Override
-			public void onStatusChanged(String provider, int status, Bundle extras) {
+                        @Override
+                        public void onProviderEnabled(String provider) {
 
 
-			}
-		} );
+                        }
 
-		//Get a list of providers
-		//could also use  String = getBestProvider(Criteria  criteria, boolean enabledOnly)
-		List<String> mylist = myL.getProviders(true);
-		Location loc = null;  String networkstr = "";
-		for (int i=0; i<mylist.size() && loc ==null ; i++) {
-			networkstr = mylist.get(i).toString();
-			output.append("\n Attempting: "+ networkstr);
-			loc = myL.getLastKnownLocation(networkstr);   
-		}
-		if (loc != null ) {
-			double sLatitude = loc.getLatitude();
-			double sLongitude = loc.getLongitude();
-			String location = " "+sLatitude+","+sLongitude; 
-			output.append(location);
-		} else {
-			output.append("\nNo location can be found.\n");
-		}
+                        @Override
+                        public void onStatusChanged(String provider, int status, Bundle extras) {
 
-		return myView;
-	}
 
+                        }
+                    });
+
+            //Get a list of providers
+            //could also use  String = getBestProvider(Criteria  criteria, boolean enabledOnly)
+            List<String> mylist = myL.getProviders(true);
+            Location loc = null;
+            String networkstr = "";
+            for (int i = 0; i < mylist.size() && loc == null; i++) {
+                networkstr = mylist.get(i).toString();
+                output.append("\n Attempting: " + networkstr);
+                loc = myL.getLastKnownLocation(networkstr);
+            }
+            if (loc != null) {
+                double sLatitude = loc.getLatitude();
+                double sLongitude = loc.getLongitude();
+                String location = " " + sLatitude + "," + sLongitude;
+                output.append(location);
+            } else {
+                output.append("\nNo location can be found.\n");
+            }
+
+        }
+    }
 }
