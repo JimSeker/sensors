@@ -9,8 +9,6 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -18,7 +16,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 /**
  * this is a demo to show how to get location (ie gps) information from the device.
@@ -29,11 +26,6 @@ import android.widget.Toast;
  */
 public class MainFragment extends Fragment {
     TextView output;
-    /**
-     * Id to identify a Fine_Access permission request.
-     */
-    private static final int REQUEST_FINE_ACCESS = 0;
-    private static final int REQUEST_COURSE_ACCESS = 1;
     static public String TAG = "MainFragment";
     LocationManager myL;
 
@@ -52,25 +44,23 @@ public class MainFragment extends Fragment {
         myL = (LocationManager) getActivity().getBaseContext().getSystemService(Context.LOCATION_SERVICE);
         //in the activity use:
 
-        startDemo();
+        startGPSDemo();
 
         return myView;
     }
 
-    public void startDemo() {
+    //use the GPS location for this device.
+    public void startGPSDemo() {
         //LocationManager myL = (LocationManager) getBaseContext().getSystemService(Context.LOCATION_SERVICE);
         //In other places may need to use (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
         //add a location listener, here building on the fly.
 
         //first check to see if I have permissions (marshmallow) if I don't then ask, otherwise start up the demo.
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             //I'm on not explaining why, just asking for permission.
             Log.v(TAG, "asking for permissions");
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
-                    REQUEST_COURSE_ACCESS);
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    REQUEST_FINE_ACCESS);
+                    MainActivity.REQUEST_FINE_ACCESS);
 
         } else {
             Log.v(TAG, "I have permissions");
@@ -82,7 +72,7 @@ public class MainFragment extends Fragment {
                             //are shown if you may need them.
                             if (location != null) {
                                 output.append("\n onLocationChanged called");
-					/*	        location.getAltitude();
+                    /*	        location.getAltitude();
 					        location.getLatitude();
 	    			        location.getLongitude();
 	    			        location.getTime();
@@ -117,9 +107,9 @@ public class MainFragment extends Fragment {
             //could also use  String = getBestProvider(Criteria  criteria, boolean enabledOnly)
             List<String> mylist = myL.getProviders(true);
             Location loc = null;
-            String networkstr = "";
+            String networkstr;
             for (int i = 0; i < mylist.size() && loc == null; i++) {
-                networkstr = mylist.get(i).toString();
+                networkstr = mylist.get(i);
                 output.append("\n Attempting: " + networkstr);
                 loc = myL.getLastKnownLocation(networkstr);
             }
@@ -134,4 +124,65 @@ public class MainFragment extends Fragment {
 
         }
     }
+
+
+    //uses the Network location which is wifi and cell locations, instead of GPS.
+    public void startCourseDemo() {
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Log.v(TAG, "asking for permission course");
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                    MainActivity.REQUEST_COARSE_ACCESS);
+        } else {
+            myL.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0,
+                    new LocationListener() {
+                        @Override
+                        public void onLocationChanged(Location location) {
+                            //if we have location information, update the screen here.  just lat and lot, others
+                            //are shown if you may need them.
+                            if (location != null) {
+                                output.append("\n onLocationChanged called");
+                                output.append("\n" + location.getLatitude() + " " + location.getLongitude());
+                            }
+                        }
+
+                        @Override
+                        public void onProviderDisabled(String provider) {
+
+                        }
+
+                        @Override
+                        public void onProviderEnabled(String provider) {
+
+
+                        }
+
+                        @Override
+                        public void onStatusChanged(String provider, int status, Bundle extras) {
+
+
+                        }
+                    });
+
+            //Get a list of providers
+            //could also use  String = getBestProvider(Criteria  criteria, boolean enabledOnly)
+            List<String> mylist = myL.getProviders(true);
+            Location loc = null;
+            String networkstr;
+            for (int i = 0; i < mylist.size() && loc == null; i++) {
+                networkstr = mylist.get(i);
+                output.append("\n Attempting: " + networkstr);
+                loc = myL.getLastKnownLocation(networkstr);
+            }
+            if (loc != null) {
+                double sLatitude = loc.getLatitude();
+                double sLongitude = loc.getLongitude();
+                String location = " " + sLatitude + "," + sLongitude;
+                output.append(location);
+            } else {
+                output.append("\nNo location can be found.\n");
+            }
+
+        }
+    }
+
 }
