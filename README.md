@@ -1,4 +1,4 @@
-android Sensor and input Examples
+android Hardware Sensor and input Examples
 ===========
 eclipse/ has the examples in that eclipse can load. These are no longer updated.  Otherwise everything are Android Studio projects
 
