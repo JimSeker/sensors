@@ -201,7 +201,7 @@ public class MainFragment extends Fragment {
             }
             return false;
         }
-    };
+    }
 	void registerAccelerometer() {
 //	    private SensorManager myManager;
 //	    private Sensor accSensor;
