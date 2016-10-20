@@ -4,19 +4,24 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
+import java.util.Random;
+
 /**
  *  Eight ball.
  */
 public class EightBall extends View {
-
+    int mwidth =0;
+    int mheight = 0;
     Bitmap bg;
     Paint mPaint;
     int AnswerNum = 1;
+    Random myRandom = new Random();
     String Answers[] = { "Signs point to yes",
             "Yes",
             "Reply hazy, try again",
@@ -55,17 +60,20 @@ public class EightBall extends View {
 
     private void init(AttributeSet attrs, int defStyle) {
         //basically ignoring the attributes and will setup my own.
+        float scale = getResources().getDisplayMetrics().density; //this gives me the scale value for a mdpi baseline of 1.
         bg = BitmapFactory.decodeResource(getResources(), R.drawable.eightball);
         mPaint = new Paint();
-
-
+        mPaint.setColor(Color.WHITE);
+        mPaint.setStyle(Paint.Style.FILL);
+        mPaint.setTextSize(mPaint.getTextSize()*scale); //scale the font size too
     }
 
     /*
      * Setup the text on the Eight Ball.
      */
     public void changeText() {
-
+        AnswerNum = myRandom.nextInt(Answers.length);
+        invalidate();
     }
 
 
@@ -74,6 +82,7 @@ public class EightBall extends View {
         super.onDraw(canvas);
 
         canvas.drawBitmap(bg,0,0,mPaint);
+        canvas.drawText(Answers[AnswerNum],mwidth/2,mheight/2,mPaint);
 
     }
 
@@ -83,8 +92,7 @@ public class EightBall extends View {
 
         Log.i("MSW", ""+getMeasuredWidth());
         Log.i("MSH", ""+getMeasuredHeight());
-        int mwidth =0;
-        int mheight = 0;
+
         if (bg != null) {
             mwidth = bg.getWidth();
             mheight = bg.getHeight();
