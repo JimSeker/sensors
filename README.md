@@ -6,6 +6,8 @@ eclipse/ has the examples in that eclipse can load. These are no longer updated.
 
 <b>pitchrollX</b> demo the sensors in the device, like accelerometer, meagnetic_fild (<b>pitchroll3</b>), orientation (<b>pitchroll</b>)
 
+<b>8ball</b> is a demo using the magic 8 ball example.  It use the linear acceleration to deterine if the "ball" is being shaken.
+
 <b>gpsDemo</b> is an example of how to use the location/gps on the phone.
 
 <b>FingerprintDialog</b> is googles example.  See https://github.com/googlesamples/android-FingerprintDialog/
