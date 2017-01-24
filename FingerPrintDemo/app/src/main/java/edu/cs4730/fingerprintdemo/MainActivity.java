@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     KeyStore mKeyStore;
     KeyGenerator mKeyGenerator;
     Cipher mCipher;
+
     private FingerprintManager.CryptoObject mCryptoObject;
     private FingerprintManager mFingerprintManager;
 
