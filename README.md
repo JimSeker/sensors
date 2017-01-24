@@ -12,7 +12,7 @@ eclipse/ has the examples in that eclipse can load. These are no longer updated.
 
 <b>FingerprintDialog</b> is googles example.  See https://github.com/googlesamples/android-FingerprintDialog/
 
-<b>FingerPrintDemo</b> is a simple version to verify a "purchase" using the finger printer scanner.  It's based on android's FingerprintDialog, but far simplier.
+<b>FingerPrintDemo</b> is a simple version to verify a "purchase" using the finger printer scanner.  It's based on android's FingerprintDialog, but far simplier.  It needs to be updated to use API 24/25 as well, but currently uses just the 23 methods.
 
 
 These are example code for University of Wyoming, Cosc 4730 Mobile Programming course.
