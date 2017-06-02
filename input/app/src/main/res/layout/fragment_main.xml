@@ -1,24 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:orientation="vertical" android:layout_width="fill_parent"
-	android:layout_height="fill_parent">
-	<TextView android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:text="Input Example" />
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
 
-	<TextView android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:text="Key: " android:id="@+id/label1" />
-	<TextView android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:text="Navigation: "
-		android:id="@+id/label2" />
-	<TextView android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:text="Touch: "
-		android:id="@+id/label3" />
-	<TextView android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:text="Sensor: "
-		android:id="@+id/label4" />
-	<ImageView android:id="@+id/ImageView01"
-		android:layout_width="wrap_content" android:layout_height="wrap_content"
-		android:clickable="true" android:fitsSystemWindows="true"
-		android:focusableInTouchMode="true" android:focusable="true"
-		android:src="@drawable/board"></ImageView>
-</LinearLayout>
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Input Example"
+        tools:layout_constraintTop_creator="1"
+        tools:layout_constraintRight_creator="1"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:layout_constraintLeft_creator="1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/textView"
+        android:layout_marginTop="8dp"
+        app:layout_constraintHorizontal_bias="0.0"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8dp" />
+
+    <TextView
+        android:id="@+id/label1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Key: "
+        tools:layout_constraintTop_creator="1"
+        tools:layout_constraintRight_creator="1"
+        app:layout_constraintRight_toRightOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        tools:layout_constraintLeft_creator="1"
+        app:layout_constraintLeft_toLeftOf="@+id/textView"
+        android:layout_marginTop="8dp"
+        app:layout_constraintHorizontal_bias="0.0" />
+
+    <TextView
+        android:id="@+id/label2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Navigation: "
+        tools:layout_constraintTop_creator="1"
+        tools:layout_constraintRight_creator="1"
+        app:layout_constraintRight_toRightOf="@+id/label1"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/label1"
+        tools:layout_constraintLeft_creator="1"
+        app:layout_constraintLeft_toLeftOf="@+id/label1"
+        app:layout_constraintHorizontal_bias="0.0" />
+
+    <TextView
+        android:id="@+id/label3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Touch: "
+        tools:layout_constraintTop_creator="1"
+        tools:layout_constraintRight_creator="1"
+        app:layout_constraintRight_toRightOf="@+id/label2"
+        app:layout_constraintTop_toBottomOf="@+id/label2"
+        tools:layout_constraintLeft_creator="1"
+        app:layout_constraintLeft_toLeftOf="@+id/label2"
+        android:layout_marginTop="8dp"
+        app:layout_constraintHorizontal_bias="0.0" />
+
+    <TextView
+        android:id="@+id/label4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Sensor: "
+        tools:layout_constraintTop_creator="1"
+        tools:layout_constraintRight_creator="1"
+        app:layout_constraintRight_toRightOf="@+id/label3"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/label3"
+        tools:layout_constraintLeft_creator="1"
+        app:layout_constraintLeft_toLeftOf="@+id/label3"
+        app:layout_constraintHorizontal_bias="0.0" />
+
+    <ImageView
+        android:id="@+id/ImageView01"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:fitsSystemWindows="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:src="@drawable/board"
+        tools:layout_constraintTop_creator="1"
+        app:layout_constraintTop_toBottomOf="@+id/label4"
+        tools:layout_constraintLeft_creator="1"
+        app:layout_constraintLeft_toLeftOf="@+id/label4"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent" />
+</android.support.constraint.ConstraintLayout>
