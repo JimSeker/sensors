@@ -29,99 +29,100 @@ import android.widget.TextView;
  */
 
 
-
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
 
-	private SensorManager mSensorManager;
-	private Sensor mSensor;
-	Boolean Falling = false;
-	MediaPlayer mediaPlayer;
+    private SensorManager mSensorManager;
+    private Sensor mSensor;
+    Boolean Falling = false;
+    MediaPlayer mediaPlayer;
 
-	TextView ev0, freefall;
+    TextView ev0, freefall;
+    String TAG = "freefall";
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-		ev0 = (TextView) findViewById(R.id.tv_ev0);
-
-
-		freefall = (TextView) findViewById(R.id.fall);		
-
-		mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-		mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-		Falling = false;
-	}
+        ev0 = (TextView) findViewById(R.id.tv_ev0);
 
 
-	@Override
-	protected void onResume() {
-		mSensorManager.registerListener(this, mSensor, SensorManager.SENSOR_DELAY_UI);
-		super.onResume();
-		Falling = false;
-	}
-	@Override
-	protected void onPause() {
-		mSensorManager.unregisterListener(this, mSensor);
-		KillMediaPlayer();
-		super.onPause();
-		Falling = false;
-	}
+        freefall = (TextView) findViewById(R.id.fall);
 
-	@Override
-	public void onSensorChanged(SensorEvent event) {
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        Falling = false;
+    }
 
 
-		//SQRT(x*x + y*y + z*z).
-		double vector=Math.sqrt(event.values[0]*event.values[0]+event.values[1]*event.values[1]+event.values[2]*event.values[2]);
-		//9.8 m/s is basically not moving
-		//3.0 m/s or less is basically falling.
-		//20 m/s is landing ish, based on what I read.
-		
+    @Override
+    protected void onResume() {
+        mSensorManager.registerListener(this, mSensor, SensorManager.SENSOR_DELAY_UI);
+        super.onResume();
+        Falling = false;
+    }
 
-		ev0.setText(String.valueOf(vector));
-		//logthis(ev0.getText().toString());
+    @Override
+    protected void onPause() {
+        mSensorManager.unregisterListener(this, mSensor);
+        KillMediaPlayer();
+        super.onPause();
+        Falling = false;
+    }
 
-		if (vector <=3.0) { // 3 m/s should be falling, I think...
-			Falling = true;
-			playsnd();
-		} else {
-			Falling = false;
-		}
-		if (Falling) {
-			freefall.setText("Falling!");
-		} else {
-			freefall.setText("not");
-		}
-	}
-
-	@Override
-	public void onAccuracyChanged(Sensor sensor, int accuracy) {
-		// I don't care.
-
-	}
-
-	public void playsnd() {
-		if (mediaPlayer == null) { //first time
-			mediaPlayer =  MediaPlayer.create(getBaseContext(),R.raw.hmscream);
-		} else if (mediaPlayer.isPlaying()) { //duh don't start it again.
-			//Toast.makeText(getBaseContext(), "I'm playing already", Toast.LENGTH_SHORT).show();
-			return;
-		} else { //play it at least one, reset and play again.
-			mediaPlayer.seekTo(0);
-		}
-		mediaPlayer.start();
-	}
+    @Override
+    public void onSensorChanged(SensorEvent event) {
 
 
-	void KillMediaPlayer() {
-		if (mediaPlayer != null)
-			mediaPlayer.release();
-	}
-	
-	public void logthis(String text) {
-		Log.v("freefall", text);
-	}
+        //SQRT(x*x + y*y + z*z).
+        double vector = Math.sqrt(event.values[0] * event.values[0] + event.values[1] * event.values[1] + event.values[2] * event.values[2]);
+        //9.8 m/s is basically not moving
+        //3.0 m/s or less is basically falling.
+        //20 m/s is landing ish, based on what I read.
+
+
+        ev0.setText(String.valueOf(vector));
+        //logthis(ev0.getText().toString());
+
+        if (vector <= 3.0) { // 3 m/s should be falling, I think...
+            Falling = true;
+            playsnd();
+        } else {
+            Falling = false;
+        }
+        if (Falling) {
+            freefall.setText("Falling!");
+        } else {
+            freefall.setText("not");
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+        // I don't care.
+
+    }
+
+    public void playsnd() {
+        if (mediaPlayer == null) { //first time
+            mediaPlayer = MediaPlayer.create(getBaseContext(), R.raw.hmscream);
+        } else if (mediaPlayer.isPlaying()) { //duh don't start it again.
+            //Toast.makeText(getBaseContext(), "I'm playing already", Toast.LENGTH_SHORT).show();
+            return;
+        } else { //play it at least one, reset and play again.
+            mediaPlayer.seekTo(0);
+        }
+        mediaPlayer.start();
+    }
+
+
+    void KillMediaPlayer() {
+        if (mediaPlayer != null)
+            mediaPlayer.release();
+    }
+
+    public void logthis(String text) {
+        Log.v(TAG, text);
+    }
 
 }
