@@ -1,12 +1,12 @@
-android Hardware Sensor and input Examples
+Android Hardware Sensor and input Examples
 ===========
-eclipse/ has the examples in that eclipse can load. These are no longer updated.  Otherwise everything are Android Studio projects
+<b>eclipse/</b> has the examples in that eclipse can load. These are no longer updated.  Otherwise everything are Android Studio projects
 
-<b>Input</b> and <b>input2</b> demo the keyboard, touch, guesture listeners
+<b>Input</b> and <b>input2</b> demo the keyboard, touch, gesture listeners
 
-<b>pitchrollX</b> demo the sensors in the device, like accelerometer, meagnetic_fild (<b>pitchroll3</b>), orientation (<b>pitchroll</b>)
+<b>pitchrollX</b> demo the sensors in the device, like accelerometer, meagnetic_field (<b>pitchroll3</b>), orientation (<b>pitchroll</b>)
 
-<b>8ball</b> is a demo using the magic 8 ball example.  It use the linear acceleration to deterine if the "ball" is being shaken.
+<b>8ball</b> is a demo using the magic 8 ball example.  It use the linear acceleration to determine if the "ball" is being shaken.
 
 <b>gpsDemo</b> is an example of how to use the location/gps on the phone.
 
