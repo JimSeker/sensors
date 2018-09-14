@@ -3,9 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Application/Application.iml" filepath="$PROJECT_DIR$/Application/Application.iml" />
-      <module fileurl="file://C:\Users\seker\git\sensors\FingerprintDialog\Application\Application.iml" filepath="C:\Users\seker\git\sensors\FingerprintDialog\Application\Application.iml" />
       <module fileurl="file://$PROJECT_DIR$/FingerprintDialog.iml" filepath="$PROJECT_DIR$/FingerprintDialog.iml" />
-      <module fileurl="file://C:\Users\seker\git\sensors\FingerprintDialog\FingerprintDialog.iml" filepath="C:\Users\seker\git\sensors\FingerprintDialog\FingerprintDialog.iml" />
     </modules>
   </component>
 </project>
