@@ -1,8 +1,8 @@
 package edu.cs4730.input2;
 
 import android.os.Bundle;
-import android.support.v4.view.GestureDetectorCompat;
-import android.support.v7.app.AppCompatActivity;
+import androidx.core.view.GestureDetectorCompat;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.GestureDetector.OnGestureListener;
 import android.util.Log;
 import android.view.GestureDetector.OnDoubleTapListener;

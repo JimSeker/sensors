@@ -9,8 +9,10 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
+
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,18 +62,18 @@ public class MainFragment extends Fragment {
             //I'm on not explaining why, just asking for permission.
             Log.v(TAG, "asking for permissions");
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    MainActivity.REQUEST_FINE_ACCESS);
+                MainActivity.REQUEST_FINE_ACCESS);
 
         } else {
             Log.v(TAG, "I have permissions");
             myL.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0,
-                    new LocationListener() {
-                        @Override
-                        public void onLocationChanged(Location location) {
-                            //if we have location information, update the screen here.  just lat and lot, others
-                            //are shown if you may need them.
-                            if (location != null) {
-                                output.append("\n onLocationChanged called");
+                new LocationListener() {
+                    @Override
+                    public void onLocationChanged(Location location) {
+                        //if we have location information, update the screen here.  just lat and lot, others
+                        //are shown if you may need them.
+                        if (location != null) {
+                            output.append("\n onLocationChanged called");
                     /*	        location.getAltitude();
 					        location.getLatitude();
 	    			        location.getLongitude();
@@ -80,28 +82,28 @@ public class MainFragment extends Fragment {
 	    			        location.getSpeed();
 	    			        location.getProvider();
 					 */
-                                output.append("\n" + location.getLatitude() + " " + location.getLongitude());
-
-                            }
-                        }
-
-                        @Override
-                        public void onProviderDisabled(String provider) {
+                            output.append("\n" + location.getLatitude() + " " + location.getLongitude());
 
                         }
+                    }
 
-                        @Override
-                        public void onProviderEnabled(String provider) {
+                    @Override
+                    public void onProviderDisabled(String provider) {
+
+                    }
+
+                    @Override
+                    public void onProviderEnabled(String provider) {
 
 
-                        }
+                    }
 
-                        @Override
-                        public void onStatusChanged(String provider, int status, Bundle extras) {
+                    @Override
+                    public void onStatusChanged(String provider, int status, Bundle extras) {
 
 
-                        }
-                    });
+                    }
+                });
 
             //Get a list of providers
             //could also use  String = getBestProvider(Criteria  criteria, boolean enabledOnly)
@@ -131,37 +133,37 @@ public class MainFragment extends Fragment {
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             Log.v(TAG, "asking for permission course");
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
-                    MainActivity.REQUEST_COARSE_ACCESS);
+                MainActivity.REQUEST_COARSE_ACCESS);
         } else {
             myL.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0,
-                    new LocationListener() {
-                        @Override
-                        public void onLocationChanged(Location location) {
-                            //if we have location information, update the screen here.  just lat and lot, others
-                            //are shown if you may need them.
-                            if (location != null) {
-                                output.append("\n onLocationChanged called");
-                                output.append("\n" + location.getLatitude() + " " + location.getLongitude());
-                            }
+                new LocationListener() {
+                    @Override
+                    public void onLocationChanged(Location location) {
+                        //if we have location information, update the screen here.  just lat and lot, others
+                        //are shown if you may need them.
+                        if (location != null) {
+                            output.append("\n onLocationChanged called");
+                            output.append("\n" + location.getLatitude() + " " + location.getLongitude());
                         }
+                    }
 
-                        @Override
-                        public void onProviderDisabled(String provider) {
+                    @Override
+                    public void onProviderDisabled(String provider) {
 
-                        }
+                    }
 
-                        @Override
-                        public void onProviderEnabled(String provider) {
-
-
-                        }
-
-                        @Override
-                        public void onStatusChanged(String provider, int status, Bundle extras) {
+                    @Override
+                    public void onProviderEnabled(String provider) {
 
 
-                        }
-                    });
+                    }
+
+                    @Override
+                    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+
+                    }
+                });
 
             //Get a list of providers
             //could also use  String = getBestProvider(Criteria  criteria, boolean enabledOnly)

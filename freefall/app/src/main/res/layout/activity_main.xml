@@ -1,4 +1,5 @@
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,39 +11,39 @@
         android:id="@+id/TextView01"
         android:layout_width="71dp"
         android:layout_height="31dp"
-        android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
         android:text="Vector:"
         android:textAppearance="?android:attr/textAppearanceLarge"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_constraintLeft_creator="1"
-        tools:layout_constraintTop_creator="1" />
+        tools:layout_constraintTop_creator="1"/>
 
     <TextView
         android:id="@+id/tv_ev0"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:text="Large Text"
         android:textAppearance="?android:attr/textAppearanceLarge"
         app:layout_constraintLeft_toLeftOf="@+id/TextView01"
         app:layout_constraintTop_toBottomOf="@+id/TextView01"
         tools:layout_constraintLeft_creator="1"
-        tools:layout_constraintTop_creator="1"
-        android:layout_marginTop="8dp" />
+        tools:layout_constraintTop_creator="1"/>
 
     <TextView
         android:id="@+id/fall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="8dp"
         android:text="Falling?"
         android:textAppearance="?android:attr/textAppearanceLarge"
         app:layout_constraintLeft_toLeftOf="@+id/tv_ev0"
         app:layout_constraintTop_toBottomOf="@+id/tv_ev0"
         tools:layout_constraintLeft_creator="1"
-        tools:layout_constraintTop_creator="1"
-        android:layout_marginLeft="0dp"
-        android:layout_marginTop="8dp" />
+        tools:layout_constraintTop_creator="1"/>
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,7 +8,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -53,11 +53,11 @@ public class MainFragment extends Fragment {
 		// Inflate the layout for this fragment
 		View myView =  inflater.inflate(R.layout.fragment_main, container, false);
 		
-    	label1 = (TextView) myView.findViewById(R.id.label1);
-    	label2 = (TextView) myView.findViewById(R.id.label2);
-    	label3 = (TextView) myView.findViewById(R.id.label3);
-    	label4 = (TextView) myView.findViewById(R.id.label4);
-    	iv = (ImageView) myView.findViewById(R.id.ImageView01);
+    	label1 =  myView.findViewById(R.id.label1);
+    	label2 = myView.findViewById(R.id.label2);
+    	label3 = myView.findViewById(R.id.label3);
+    	label4 = myView.findViewById(R.id.label4);
+    	iv = myView.findViewById(R.id.ImageView01);
     	
     	iv.setOnKeyListener(new myKeyListener());
     	
