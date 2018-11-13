@@ -2,10 +2,12 @@ package edu.cs4730.gpsDemo;
 
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 
 //Nothing to see here, go the MainFragment.
 
@@ -22,14 +24,14 @@ public class MainActivity extends AppCompatActivity {
 
         myFrag = new MainFragment();
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.container, myFrag).commit();
+            .add(R.id.container, myFrag).commit();
     }
 
     /**
      * Callback received when a permissions request has been completed.
      */
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         Log.v(TAG, "onRequest result called.");
         switch (requestCode) {
             case REQUEST_FINE_ACCESS:
@@ -40,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
                     // permission was granted
                     Log.v(TAG, permissions[0] + " permission has now been granted. Showing preview.");
                     Toast.makeText(this, "GPS access granted",
-                            Toast.LENGTH_SHORT).show();
+                        Toast.LENGTH_SHORT).show();
                     myFrag.startGPSDemo();  //call the method again, so the gps demo will start up.
                 } else {
                     // permission denied,    Disable this feature or close the app.
@@ -52,13 +54,13 @@ public class MainActivity extends AppCompatActivity {
             case REQUEST_COARSE_ACCESS:
                 //received result for cell/wifi location (IE coarse location access)
                 Log.v(TAG, "Received response for coarse access permissions request.");
-               if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                   Log.v(TAG, permissions[0] + " permission has now been granted. Showing preview.");
-                   // permission was granted
+                if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.v(TAG, permissions[0] + " permission has now been granted. Showing preview.");
+                    // permission was granted
                     Toast.makeText(this, "cell/wifi location access granted", Toast.LENGTH_SHORT).show();
-                   myFrag.startCourseDemo();  //call the method again, so the course demo will start up.
+                    myFrag.startCourseDemo();  //call the method again, so the course demo will start up.
                 } else {
-                   // permission denied
+                    // permission denied
                     Log.v(TAG, "coarse location permissions were NOT granted.");
                     Toast.makeText(this, "cell/wifi location access granted", Toast.LENGTH_SHORT).show();
                 }

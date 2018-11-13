@@ -41,7 +41,7 @@ public class MainFragment extends Fragment {
         // Inflate the layout for this fragment
         View myView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        output = (TextView) myView.findViewById(R.id.TextView01);
+        output = myView.findViewById(R.id.TextView01);
         output.append("\nNOTE, if you haven't told the Sim a location, there will be errors!\n");
         myL = (LocationManager) getActivity().getBaseContext().getSystemService(Context.LOCATION_SERVICE);
         //in the activity use:
