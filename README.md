@@ -10,9 +10,11 @@ Android Hardware Sensor and input Examples
 
 <b>gpsDemo</b> is an example of how to use the location/gps on the phone.
 
-<b>FingerprintDialog</b> is googles example.  See https://github.com/googlesamples/android-FingerprintDialog/
+<b>FingerprintDialog</b> is google's example. See https://github.com/googlesamples/android-FingerprintDialog/   deprecated example in API 28, this is a legacy example.  see BiometricPromptDemo for API 28+
 
-<b>FingerPrintDemo</b> is a simple version to verify a "purchase" using the finger printer scanner.  It's based on android's FingerprintDialog, but far simpler.  It needs to be updated to use API 24/25 as well, but currently uses just the 23 methods.
+<b>FingerPrintDemo</b> is a simple version to verify a "purchase" using the finger printer scanner.  It's based on android's FingerprintDialog, but far simpler.  It needs to be updated to use API 24/25 as well, but currently uses just the 23 methods.  deprecated example as of API 28, this is a legacy example. see BiometricPromptDemo for API 28+
+
+<b>BiometricPromptDemo</b> is an API 28 version to use fingerprints (and more later if the phones support more biometrics).  It needs some work, but is a functional example.
 
 <b>nfc3</b> is an example of to set a nfc tag.
 
