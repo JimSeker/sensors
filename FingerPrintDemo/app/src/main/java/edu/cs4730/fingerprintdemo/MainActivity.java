@@ -13,7 +13,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
@@ -33,9 +32,13 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 
 
-/*
- This code is based on the very complex code in the FingerPrintDialog example provided by
- android/google.  This is just a simple version to show the fingerprint scanner and not much else.
+/**
+ * This code is based on the very complex code in the FingerPrintDialog example provided by
+ * android/google.  This is just a simple version to show the fingerprint scanner and not much else.
+ *
+ * FingerprintManager has been deprecated in API 28 for the BiometricPrompt.  So this example is going to
+ * be marked as legacy and will not be updated anymore.
+ *
  */
 
 public class MainActivity extends AppCompatActivity {
@@ -45,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
     String TAG = "MainActivity";
     private static final String SECRET_MESSAGE = "Very secret message";
 
-     //Alias for our key in the Android Key Store
+    //Alias for our key in the Android Key Store
     private static final String KEY_NAME = "my_key";
 
     KeyStore mKeyStore;
@@ -63,8 +66,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        logger = (TextView) findViewById(R.id.logger);
-        buyNow = (Button) findViewById(R.id.buynow);
+        logger = findViewById(R.id.logger);
+        buyNow = findViewById(R.id.buynow);
         buyNow.setEnabled(false);
         buyNow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,11 +103,11 @@ public class MainActivity extends AppCompatActivity {
 
             //note the dialog is not necessary.  It's just so the user knows to do something.
             mAlertDialog = new AlertDialog.Builder(MainActivity.this)
-                    .setCancelable(false)
-                    .setTitle("Purchase something")
-                    .setMessage("Use the finger print scanner")
-                    .setIcon(R.mipmap.ic_fp_40px)
-                    .create();
+                .setCancelable(false)
+                .setTitle("Purchase something")
+                .setMessage("Use the finger print scanner")
+                .setIcon(R.mipmap.ic_fp_40px)
+                .create();
             mAlertDialog.show();
 
             //create the crypto object needed by the finger print authenticator (at least I think it needs one).
@@ -118,44 +121,44 @@ public class MainActivity extends AppCompatActivity {
             //studio thinks I need to call for permissions, except I don't.   very odd, disabled it.  Maybe in N?
             //noinspection ResourceType
             mFingerprintManager.authenticate(
-                    mCryptoObject,
-                    mCancellationSignal,
-                    0, /* flags */
-                    new FingerprintManager.AuthenticationCallback() {
-                        @Override
-                        public void onAuthenticationError(int errorCode, CharSequence errString) {
-                            super.onAuthenticationError(errorCode, errString);
-                            logger.append("FingerPrint Error\n");
-                            mAlertDialog.dismiss();
-                            //Toast.makeText(getApplicationContext(), "Finger Print Err", Toast.LENGTH_SHORT).show();
-                        }
+                mCryptoObject,
+                mCancellationSignal,
+                0, /* flags */
+                new FingerprintManager.AuthenticationCallback() {
+                    @Override
+                    public void onAuthenticationError(int errorCode, CharSequence errString) {
+                        super.onAuthenticationError(errorCode, errString);
+                        logger.append("FingerPrint Error\n");
+                        mAlertDialog.dismiss();
+                        //Toast.makeText(getApplicationContext(), "Finger Print Err", Toast.LENGTH_SHORT).show();
+                    }
 
-                        @Override
-                        public void onAuthenticationSucceeded(FingerprintManager.AuthenticationResult result) {
-                            super.onAuthenticationSucceeded(result);
-                            logger.append("FingerPrint success\n");
-                            tryEncrypt();
-                            mAlertDialog.dismiss();
-                           // Toast.makeText(getApplicationContext(), "Finger Print SUCCESS!", Toast.LENGTH_SHORT).show();
-                        }
+                    @Override
+                    public void onAuthenticationSucceeded(FingerprintManager.AuthenticationResult result) {
+                        super.onAuthenticationSucceeded(result);
+                        logger.append("FingerPrint success\n");
+                        tryEncrypt();
+                        mAlertDialog.dismiss();
+                        // Toast.makeText(getApplicationContext(), "Finger Print SUCCESS!", Toast.LENGTH_SHORT).show();
+                    }
 
-                        @Override
-                        public void onAuthenticationFailed() {
-                            super.onAuthenticationFailed();
-                            logger.append("FingerPrint failed\n");
-                            mCancellationSignal.cancel();  //used to exit the authenticator.  In real, should say Try Again or something.
-                            mAlertDialog.dismiss();
-                            //Toast.makeText(getApplicationContext(), "Finger Print Fail", Toast.LENGTH_SHORT).show();
-                        }
-                    },
-                    null
+                    @Override
+                    public void onAuthenticationFailed() {
+                        super.onAuthenticationFailed();
+                        logger.append("FingerPrint failed\n");
+                        mCancellationSignal.cancel();  //used to exit the authenticator.  In real, should say Try Again or something.
+                        mAlertDialog.dismiss();
+                        //Toast.makeText(getApplicationContext(), "Finger Print Fail", Toast.LENGTH_SHORT).show();
+                    }
+                },
+                null
             );
 
         }
     }
 
-    /*
-     setup method to get all the crypto variables setup to use later one.
+    /**
+     * setup method to get all the crypto variables setup to use later one.
      */
     public void setupCypto() {
         try {
@@ -172,8 +175,8 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             mCipher = Cipher.getInstance(KeyProperties.KEY_ALGORITHM_AES + "/"
-                    + KeyProperties.BLOCK_MODE_CBC + "/"
-                    + KeyProperties.ENCRYPTION_PADDING_PKCS7);
+                + KeyProperties.BLOCK_MODE_CBC + "/"
+                + KeyProperties.ENCRYPTION_PADDING_PKCS7);
         } catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
             throw new RuntimeException("Failed to get an instance of Cipher", e);
         }
@@ -197,11 +200,10 @@ public class MainActivity extends AppCompatActivity {
         } catch (KeyPermanentlyInvalidatedException e) {
             return false;
         } catch (KeyStoreException | CertificateException | UnrecoverableKeyException | IOException
-                | NoSuchAlgorithmException | InvalidKeyException e) {
+            | NoSuchAlgorithmException | InvalidKeyException e) {
             throw new RuntimeException("Failed to init Cipher", e);
         }
     }
-
 
 
     /**
@@ -217,17 +219,17 @@ public class MainActivity extends AppCompatActivity {
             // Set the alias of the entry in Android KeyStore where the key will appear
             // and the constrains (purposes) in the constructor of the Builder
             mKeyGenerator.init(new KeyGenParameterSpec.Builder(KEY_NAME,
-                    KeyProperties.PURPOSE_ENCRYPT |
-                            KeyProperties.PURPOSE_DECRYPT)
-                    .setBlockModes(KeyProperties.BLOCK_MODE_CBC)
-                            // Require the user to authenticate with a fingerprint to authorize every use
-                            // of the key
-                    .setUserAuthenticationRequired(true)
-                    .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_PKCS7)
-                    .build());
+                KeyProperties.PURPOSE_ENCRYPT |
+                    KeyProperties.PURPOSE_DECRYPT)
+                .setBlockModes(KeyProperties.BLOCK_MODE_CBC)
+                // Require the user to authenticate with a fingerprint to authorize every use
+                // of the key
+                .setUserAuthenticationRequired(true)
+                .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_PKCS7)
+                .build());
             mKeyGenerator.generateKey();
         } catch (NoSuchAlgorithmException | InvalidAlgorithmParameterException
-                | CertificateException | IOException e) {
+            | CertificateException | IOException e) {
             throw new RuntimeException(e);
         }
     }

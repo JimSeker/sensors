@@ -16,7 +16,6 @@
 
 package com.example.android.fingerprintdialog;
 
-import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -38,6 +37,10 @@ import android.widget.TextView;
 /**
  * A dialog which uses fingerprint APIs to authenticate the user, and falls back to password
  * authentication if fingerprint is not available.
+ *
+ *  FingerprintManager has been deprecated in API 28 for the BiometricPrompt.  So this example is going to
+ *  be marked as legacy and will not be updated anymore.
+ *
  */
 public class FingerprintAuthenticationDialogFragment extends DialogFragment
         implements TextView.OnEditorActionListener, FingerprintUiHelper.Callback {
