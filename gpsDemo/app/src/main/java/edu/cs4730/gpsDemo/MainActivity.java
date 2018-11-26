@@ -21,10 +21,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        myFrag = new MainFragment();
-        getSupportFragmentManager().beginTransaction()
-            .add(R.id.container, myFrag).commit();
+        if (savedInstanceState == null) {
+            myFrag = new MainFragment();
+            getSupportFragmentManager().beginTransaction()
+                .add(R.id.container, myFrag).commit();
+        }
     }
 
     /**
