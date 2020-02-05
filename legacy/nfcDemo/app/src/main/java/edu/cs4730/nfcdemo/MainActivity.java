@@ -37,6 +37,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.nio.charset.Charset;
+
 public class MainActivity extends AppCompatActivity implements CreateNdefMessageCallback,
     OnNdefPushCompleteCallback {
     NfcAdapter mNfcAdapter;
@@ -73,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements CreateNdefMessage
         String text = ("Beam me up!\n\n" +
             "Beam Time: " + time.format("%H:%M:%S"));
         NdefMessage msg = new NdefMessage(
-            new NdefRecord[] { createMimeRecord(
+            new NdefRecord[]{createMimeRecord(
                 "application/edu.cs4730.nfcdemo.beam", text.getBytes())
                 /**
                  * The Android Application Record (AAR) is commented out. When a device
@@ -98,7 +99,9 @@ public class MainActivity extends AppCompatActivity implements CreateNdefMessage
         mHandler.obtainMessage(MESSAGE_SENT).sendToTarget();
     }
 
-    /** This handler receives a message from onNdefPushComplete */
+    /**
+     * This handler receives a message from onNdefPushComplete
+     */
     private final Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
