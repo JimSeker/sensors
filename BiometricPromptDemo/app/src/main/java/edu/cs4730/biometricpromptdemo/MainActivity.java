@@ -5,13 +5,16 @@ import android.content.pm.PackageManager;
 import android.os.CancellationSignal;
 import android.security.keystore.KeyGenParameterSpec;
 import android.security.keystore.KeyProperties;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.hardware.biometrics.BiometricPrompt;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,12 +28,14 @@ import java.security.SignatureException;
 import java.security.spec.ECGenParameterSpec;
 
 /**
- *
+ * Note, if there is no fingerprinter registered in the system, then example will not work.
+ * It requires a fingerprint  or face  android already registered first into order to work.
  */
 
 public class MainActivity extends AppCompatActivity {
     final String TAG = "MainActivity";
     TextView logger;
+    Button auth;
 
     private BiometricPrompt mBiometricPrompt;
     private String mToBeSignedMessage;
@@ -53,7 +58,9 @@ public class MainActivity extends AppCompatActivity {
                     logthis("No fingerprint sensor!");
             }
         });
-        findViewById(R.id.btn_auth).setOnClickListener(new View.OnClickListener() {
+        auth = findViewById(R.id.btn_auth);
+        auth.setEnabled(false);  //need to register first!
+        auth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isSupportBiometricPrompt()) {
@@ -62,18 +69,21 @@ public class MainActivity extends AppCompatActivity {
                     logthis("No fingerprint sensor!");
             }
         });
+
     }
 
     /**
      * Before generating a key pair with biometric prompt, we need to check system feature to ensure that the device supports fingerprint, iris, or face.
-     * Currently, there is no FEATURE_IRIS and FEATURE_FACE constant on PackageManager
-     * So, only check FEATURE_FINGERPRINT
+     * Currently, there is no FEATURE_IRIS constant on PackageManager
+     * So, only check FEATURE_FINGERPRINT and PackageManager.FEATURE_FACE
      *
      * @return
      */
     private boolean isSupportBiometricPrompt() {
         PackageManager packageManager = this.getPackageManager();
-        if (packageManager.hasSystemFeature(PackageManager.FEATURE_FINGERPRINT)) {
+        if (packageManager.hasSystemFeature(PackageManager.FEATURE_FINGERPRINT) ||
+            packageManager.hasSystemFeature(PackageManager.FEATURE_FACE)
+        ) {
             return true;
         }
         return false;
@@ -96,7 +106,9 @@ public class MainActivity extends AppCompatActivity {
             // This issue is reported to Android issue tracker
             // https://issuetracker.google.com/issues/112495828
             KeyPair keyPair = generateKeyPair(KEY_NAME, true);
+
             // Send public key part of key pair to the server, this public key will be used for authentication
+
             mToBeSignedMessage = new StringBuilder()
                 .append(Base64.encodeToString(keyPair.getPublic().getEncoded(), Base64.URL_SAFE))
                 .append(":")
@@ -108,7 +120,10 @@ public class MainActivity extends AppCompatActivity {
 
             signature = initSignature(KEY_NAME);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            //throw new RuntimeException(e);
+            logthis("No fingerprint or face on file with android phone.  Go add one and then run this example again.");
+            Toast.makeText(getApplicationContext(), "No fingerprint or face already registered.", Toast.LENGTH_LONG).show();
+            return;
         }
 
         // Create biometricPrompt
@@ -130,6 +145,7 @@ public class MainActivity extends AppCompatActivity {
         if (signature != null) {
             logthis("Show biometric prompt");
             mBiometricPrompt.authenticate(new BiometricPrompt.CryptoObject(signature), cancellationSignal, getMainExecutor(), authenticationCallback);
+            auth.setEnabled(true);
         }
 
     }
@@ -251,6 +267,23 @@ public class MainActivity extends AppCompatActivity {
         keyPairGenerator.initialize(builder.build());
 
         return keyPairGenerator.generateKeyPair();
+        /*
+         * Generate a new EC key pair entry in the Android Keystore by
+         * using the KeyPairGenerator API. The private key can only be
+         * used for signing or verification and only with SHA-256 or
+         * SHA-512 as the message digest.
+         */
+            /*KeyPairGenerator kpg = KeyPairGenerator.getInstance(
+                KeyProperties.KEY_ALGORITHM_EC, "AndroidKeyStore");
+            kpg.initialize(new KeyGenParameterSpec.Builder(
+                KEY_NAME,
+                KeyProperties.PURPOSE_SIGN | KeyProperties.PURPOSE_VERIFY)
+                .setDigests(KeyProperties.DIGEST_SHA256,
+                    KeyProperties.DIGEST_SHA512)
+                .build());
+
+            KeyPair keyPair = kpg.generateKeyPair();
+*/
     }
 
     @Nullable
