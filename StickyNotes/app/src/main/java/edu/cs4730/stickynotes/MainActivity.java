@@ -15,7 +15,8 @@
  */
 package edu.cs4730.stickynotes;
 
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.DialogInterface;
@@ -57,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
         mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
         findViewById(R.id.write_tag).setOnClickListener(mTagWriter);
-        mNote = ((EditText) findViewById(R.id.note));
+        mNote = findViewById(R.id.note);
         mNote.addTextChangedListener(mTextWatcher);
 
         // Handle all of our received NFC intents in this activity.
@@ -102,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
         // NDEF exchange mode
         if (!mWriteMode && NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction())) {
             NdefMessage[] msgs = getNdefMessages(intent);

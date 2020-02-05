@@ -9,8 +9,9 @@ import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.Ndef;
 import android.nfc.tech.NdefFormatable;
-import android.nfc.tech.NfcA;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -49,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
 
-        if(intent.hasExtra(NfcAdapter.EXTRA_TAG)) {
+        if (intent.hasExtra(NfcAdapter.EXTRA_TAG)) {
             Toast.makeText(MainActivity.this, "NFC has Intent!", Toast.LENGTH_SHORT).show();
 
             Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
@@ -62,9 +63,9 @@ public class MainActivity extends AppCompatActivity {
     private void enableForegroundDispatchSystem() {
         Intent intent = new Intent(this, MainActivity.class).addFlags(Intent.FLAG_RECEIVER_REPLACE_PENDING);
 
-        PendingIntent pendingIntent =  PendingIntent.getActivity(this, 0, intent, 0);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
 
-        IntentFilter[] intentFilters = new IntentFilter[] {};
+        IntentFilter[] intentFilters = new IntentFilter[]{};
 
         nfcAdapter.enableForegroundDispatch(this, pendingIntent, intentFilters, null);
     }
@@ -74,10 +75,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void formatTag(Tag tag, NdefMessage ndefMessage) {
-        try{
+        try {
             NdefFormatable ndefFormatable = NdefFormatable.get(tag);
 
-            if(ndefFormatable == null) {
+            if (ndefFormatable == null) {
                 Toast.makeText(this, "Tag is not NdefFormatable!!", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -96,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
     private void writeNdefMessage(Tag tag, NdefMessage ndefMessage) {
         try {
 
-            if(tag == null) {
+            if (tag == null) {
                 Toast.makeText(this, "Tag object cannot be null", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -104,13 +105,13 @@ public class MainActivity extends AppCompatActivity {
             Ndef ndef = Ndef.get(tag);
 
 
-            if(ndef == null) {
+            if (ndef == null) {
                 //format tag with ndef format and writes message
-                formatTag(tag,ndefMessage);
+                formatTag(tag, ndefMessage);
             } else {
                 ndef.connect();
 
-                if(!ndef.isWritable()) {
+                if (!ndef.isWritable()) {
                     Toast.makeText(this, "Tag is not writable! ", Toast.LENGTH_SHORT).show();
                     ndef.close();
                     return;

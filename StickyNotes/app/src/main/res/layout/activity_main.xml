@@ -19,7 +19,7 @@
     <EditText
         android:id="@+id/note"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:gravity="top"
         android:text="@string/default_note_text"/>
 </LinearLayout>
