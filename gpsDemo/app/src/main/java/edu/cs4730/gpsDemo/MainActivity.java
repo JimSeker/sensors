@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.v(TAG, permissions[0] + " permission has now been granted. Showing preview.");
                     // permission was granted
                     Toast.makeText(this, "cell/wifi location access granted", Toast.LENGTH_SHORT).show();
-                    myFrag.startCourseDemo();  //call the method again, so the course demo will start up.
+                    myFrag.startCoarseDemo();  //call the method again, so the course demo will start up.
                 } else {
                     // permission denied
                     Log.v(TAG, "coarse location permissions were NOT granted.");

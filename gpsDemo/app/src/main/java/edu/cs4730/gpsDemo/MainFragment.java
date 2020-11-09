@@ -42,7 +42,7 @@ public class MainFragment extends Fragment {
         View myView = inflater.inflate(R.layout.fragment_main, container, false);
 
         output = myView.findViewById(R.id.TextView01);
-        output.append("\nNOTE, if you haven't told the Sim a location, there will be errors!\n");
+        logger("\nNOTE, if you haven't told the Sim a location, there will be errors!\n");
         myL = (LocationManager) getActivity().getBaseContext().getSystemService(Context.LOCATION_SERVICE);
         //in the activity use:
 
@@ -60,12 +60,12 @@ public class MainFragment extends Fragment {
         //first check to see if I have permissions (marshmallow) if I don't then ask, otherwise start up the demo.
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             //I'm on not explaining why, just asking for permission.
-            Log.v(TAG, "asking for permissions");
+            logger("asking for permissions");
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                 MainActivity.REQUEST_FINE_ACCESS);
 
         } else {
-            Log.v(TAG, "I have permissions");
+            logger("GPS/Fine I have permissions");
             myL.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0,
                 new LocationListener() {
                     @Override
@@ -73,7 +73,7 @@ public class MainFragment extends Fragment {
                         //if we have location information, update the screen here.  just lat and lot, others
                         //are shown if you may need them.
                         if (location != null) {
-                            output.append("\n onLocationChanged called");
+                            logger("Fine onLocationChanged called");
                     /*	        location.getAltitude();
 					        location.getLatitude();
 	    			        location.getLongitude();
@@ -82,26 +82,24 @@ public class MainFragment extends Fragment {
 	    			        location.getSpeed();
 	    			        location.getProvider();
 					 */
-                            output.append("\n" + location.getLatitude() + " " + location.getLongitude());
+                            logger(location.getLatitude() + " " + location.getLongitude());
 
                         }
                     }
 
                     @Override
                     public void onProviderDisabled(String provider) {
-
+                        logger("Fine Provider is disabled");
                     }
 
                     @Override
                     public void onProviderEnabled(String provider) {
-
-
+                        logger("Find Provider is enabled");
                     }
 
                     @Override
                     public void onStatusChanged(String provider, int status, Bundle extras) {
-
-
+                        logger("Fine Provider status changed");
                     }
                 });
 
@@ -112,16 +110,16 @@ public class MainFragment extends Fragment {
             String networkstr;
             for (int i = 0; i < mylist.size() && loc == null; i++) {
                 networkstr = mylist.get(i);
-                output.append("\n Attempting: " + networkstr);
+                logger("Attempting: " + networkstr);
                 loc = myL.getLastKnownLocation(networkstr);
             }
             if (loc != null) {
                 double sLatitude = loc.getLatitude();
                 double sLongitude = loc.getLongitude();
                 String location = " " + sLatitude + "," + sLongitude;
-                output.append(location);
+                logger(location);
             } else {
-                output.append("\nNo location can be found.\n");
+                logger("\nNo location can be found.\n");
             }
 
         }
@@ -129,12 +127,13 @@ public class MainFragment extends Fragment {
 
 
     //uses the Network location which is wifi and cell locations, instead of GPS.
-    public void startCourseDemo() {
+    public void startCoarseDemo() {
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Log.v(TAG, "asking for permission course");
+            logger("asking for permission coarse");
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
                 MainActivity.REQUEST_COARSE_ACCESS);
         } else {
+            logger("Coarse I have permissions");
             myL.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0,
                 new LocationListener() {
                     @Override
@@ -142,26 +141,25 @@ public class MainFragment extends Fragment {
                         //if we have location information, update the screen here.  just lat and lot, others
                         //are shown if you may need them.
                         if (location != null) {
-                            output.append("\n onLocationChanged called");
-                            output.append("\n" + location.getLatitude() + " " + location.getLongitude());
+                            logger("Coarse onLocationChanged called");
+                            logger(location.getLatitude() + " " + location.getLongitude());
                         }
                     }
 
                     @Override
                     public void onProviderDisabled(String provider) {
-
+                        logger("Coarse Provider is disabled");
                     }
 
                     @Override
                     public void onProviderEnabled(String provider) {
-
+                        logger("Coarse Provider is enabled");
 
                     }
 
                     @Override
                     public void onStatusChanged(String provider, int status, Bundle extras) {
-
-
+                        logger("Coarse Provider status changed");
                     }
                 });
 
@@ -172,19 +170,26 @@ public class MainFragment extends Fragment {
             String networkstr;
             for (int i = 0; i < mylist.size() && loc == null; i++) {
                 networkstr = mylist.get(i);
-                output.append("\n Attempting: " + networkstr);
+                logger("Attempting: " + networkstr);
                 loc = myL.getLastKnownLocation(networkstr);
             }
             if (loc != null) {
                 double sLatitude = loc.getLatitude();
                 double sLongitude = loc.getLongitude();
                 String location = " " + sLatitude + "," + sLongitude;
-                output.append(location);
+                logger(location);
             } else {
-                output.append("\nNo location can be found.\n");
+                logger("\nNo location can be found.\n");
             }
 
         }
     }
+
+    //simple log function to log to both a textivew and the logcat.
+    void logger(String item) {
+        output.append(item + "\n");
+        Log.d(TAG, item);
+    }
+
 
 }
