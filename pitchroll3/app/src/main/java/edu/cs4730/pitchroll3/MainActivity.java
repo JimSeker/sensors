@@ -5,13 +5,16 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
 
 
-/*
+/**
  * http://stackoverflow.com/questions/9454948/android-pitch-and-roll-issue
  * modified to remove the Orientation sensor that google dec in api 9.
  */
@@ -41,22 +44,22 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        preferred = (TextView) findViewById(R.id.preferred);
+        preferred = findViewById(R.id.preferred);
 
         mgr = (SensorManager) this.getSystemService(SENSOR_SERVICE);
         accel = mgr.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         compass = mgr.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
         WindowManager window = (WindowManager)
-                this.getSystemService(WINDOW_SERVICE);
+            this.getSystemService(WINDOW_SERVICE);
         mRotation = window.getDefaultDisplay().getRotation();
     }
 
     @Override
     protected void onResume() {
         mgr.registerListener(this, accel,
-                SensorManager.SENSOR_DELAY_NORMAL);
+            SensorManager.SENSOR_DELAY_NORMAL);
         mgr.registerListener(this, compass,
-                SensorManager.SENSOR_DELAY_NORMAL);
+            SensorManager.SENSOR_DELAY_NORMAL);
         super.onResume();
     }
 
@@ -74,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     public void onSensorChanged(SensorEvent event) {
         // Need to get both accelerometer and compass
         // before we can determine our orientationValues
+        // Log.wtf(TAG, "onSensorChanged.");
         switch (event.sensor.getType()) {
             case Sensor.TYPE_ACCELEROMETER:
                 for (int i = 0; i < 3; i++) {
@@ -91,10 +95,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 break;
         }
 
-        if (!ready)
+        if (!ready) {
+            preferred.setText("Not enough data yet.");
             return;
+        }
         if (SensorManager.getRotationMatrix(
-                inR, inclineMatrix, accelValues, compassValues)) {
+            inR, inclineMatrix, accelValues, compassValues)) {
             // got a good rotation matrix
             SensorManager.getOrientation(inR, prefValues);
             mInclination = SensorManager.getInclination(inclineMatrix);
@@ -108,8 +114,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
 
     public void doUpdate(View view) {
-        if (!ready)
+        if (!ready) {
+            preferred.setText("Not enough data yet2.");
             return;
+        }
+        // Log.wtf(TAG, "doUpdate.");
         mAzimuth = (float) Math.toDegrees(prefValues[0]);
         if (mAzimuth < 0) {
             mAzimuth += 360.0f;
@@ -117,12 +126,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         //mPitch = 180.0  + Math.toDegrees(prefValues[1]); //so it goes from 0 to 360, instead of -180 to 180
         mPitch = Math.toDegrees(prefValues[1]);
         String msg = String.format(
-                "Preferred:\nazimuth (Z): %7.3f \npitch (X): %7.3f\nroll (Y): %7.3f",
-                mAzimuth, //heading
-                mPitch,
-                Math.toDegrees(prefValues[2]));
+            "Preferred:\nazimuth (Z): %7.3f \npitch (X): %7.3f\nroll (Y): %7.3f",
+            mAzimuth, //heading
+            mPitch,
+            Math.toDegrees(prefValues[2]));
         preferred.setText(msg);
-        preferred.invalidate();
     }
 
 }

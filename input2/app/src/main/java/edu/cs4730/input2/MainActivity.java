@@ -1,8 +1,10 @@
 package edu.cs4730.input2;
 
 import android.os.Bundle;
+
 import androidx.core.view.GestureDetectorCompat;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.view.GestureDetector.OnGestureListener;
 import android.util.Log;
 import android.view.GestureDetector.OnDoubleTapListener;
@@ -12,21 +14,21 @@ import android.view.MotionEvent;
 import android.widget.Toast;
 
 
-/*
+/**
  * example from http://developer.android.com/training/gestures/detector.html
- * 
+ * <p>
  * sets a gesture detector on the "screen".     There is no real layout.
- *  needs testing with say a edittext field and button to see what if anything breaks.
- *  
- *  we are overriding the default ontouchlistener (onTouchEvent) to call the gesture detector.
- *  
- *  Also overriding the default onKeyDown()  for the activity, this maybe not be good idea
- *  if there are widgets that also need the key events such as a EditText.
- *  
- *  Overriding the backbuttonpressed as well.  it just calls finish().
- *
- *  As a note, I "broke" a nexus 5x with this example.  The toasts would not go away, even after 20 minutes
- *  I had to reboot it.    The stop button may fix the problem as well (in studio).
+ * needs testing with say a edittext field and button to see what if anything breaks.
+ * <p>
+ * we are overriding the default ontouchlistener (onTouchEvent) to call the gesture detector.
+ * <p>
+ * Also overriding the default onKeyDown()  for the activity, this maybe not be good idea
+ * if there are widgets that also need the key events such as a EditText.
+ * <p>
+ * Overriding the backbuttonpressed as well.  it just calls finish().
+ * <p>
+ * As a note, I "broke" a nexus 5x with this example.  The toasts would not go away, even after 20 minutes
+ * I had to reboot it.    The stop button may fix the problem as well (in studio).
  */
 
 public class MainActivity extends AppCompatActivity implements OnGestureListener, OnDoubleTapListener {
@@ -34,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements OnGestureListener
     private static final String TAG = "Gestures";
     private GestureDetectorCompat mDetector;
     char[] chars = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
-            '1', '2', '3', '4', '5', '6', '7', '8', '9', '0'};
+        '1', '2', '3', '4', '5', '6', '7', '8', '9', '0'};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements OnGestureListener
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new MainFragment()).commit();
+                .add(R.id.container, new MainFragment()).commit();
         }
 
 
@@ -63,10 +65,11 @@ public class MainActivity extends AppCompatActivity implements OnGestureListener
         return true;
     }
 
-    /*
+    /**
      * (non-Javadoc)
-     * @see android.support.v4.app.FragmentActivity#onKeyDown(int, android.view.KeyEvent)
-     * 
+     *
+     * @see AppCompatActivity#onKeyDown(int, android.view.KeyEvent)
+     * <p>
      * Keyevent that comes from the activity.
      */
 
@@ -83,15 +86,15 @@ public class MainActivity extends AppCompatActivity implements OnGestureListener
         return super.onKeyDown(keyCode, event);
     }
 
-	/*
+    /**
      * (non-Javadoc)
-	 * @see android.support.v4.app.FragmentActivity#onBackPressed()
-	 * 
-	 * 
-	 * This is really not recommended by well anyone.  You are change the default function of the device.
-	 * users really hate when you do that.  
-	 */
-
+     *
+     * @see AppCompatActivity#onBackPressed()
+     * <p>
+     * <p>
+     * This is really not recommended by well anyone.  You are change the default function of the device.
+     * users really hate when you do that.
+     */
     @Override
     public void onBackPressed() {
         // do something on back.
@@ -101,13 +104,14 @@ public class MainActivity extends AppCompatActivity implements OnGestureListener
         finish();  //we have to manually end the program, since we captured the backup button.
 
     }
-	/*
-	 * (non-Javadoc)
-	 * @see android.app.Activity#onTouchEvent(android.view.MotionEvent)
-	 * 
-	 * touch event that comes from he activity.  
-	 */
 
+    /**
+     * (non-Javadoc)
+     *
+     * @see android.app.Activity#onTouchEvent(android.view.MotionEvent)
+     * <p>
+     * touch event that comes from he activity.
+     */
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         this.mDetector.onTouchEvent(event);
@@ -117,11 +121,11 @@ public class MainActivity extends AppCompatActivity implements OnGestureListener
         return super.onTouchEvent(event);
     }
 
-
-    /*
+    /**
      * (non-Javadoc)
-     * @see android.view.GestureDetector.OnGestureListener#onDown(android.view.MotionEvent)
      *
+     * @see android.view.GestureDetector.OnGestureListener#onDown(android.view.MotionEvent)
+     * <p>
      * overridden from the OnGuestureListener.
      */
     @Override
@@ -131,24 +135,27 @@ public class MainActivity extends AppCompatActivity implements OnGestureListener
         return true;
     }
 
-    /*
+    /**
      * (non-Javadoc)
-     * @see android.view.GestureDetector.OnGestureListener#onFling(android.view.MotionEvent, android.view.MotionEvent, float, float)
      *
+     * @see android.view.GestureDetector.OnGestureListener#onFling(android.view.MotionEvent, android.view.MotionEvent, float, float)
+     * <p>
      * overridden from the OnGuestureListener.
      */
     @Override
     public boolean onFling(MotionEvent event1, MotionEvent event2,
                            float velocityX, float velocityY) {
-        Log.d(TAG, "onFling: " + event1.toString() + event2.toString());
-        Toast.makeText(getApplicationContext(), "onFling: " + event1.toString() + event2.toString(), Toast.LENGTH_SHORT).show();
+        String msg = "onFling: " + event1.toString() + event2.toString();
+        Log.d(TAG, msg);
+        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
         return true;
     }
 
-    /*
+    /**
      * (non-Javadoc)
-     * @see android.view.GestureDetector.OnGestureListener#onLongPress(android.view.MotionEvent)
      *
+     * @see android.view.GestureDetector.OnGestureListener#onLongPress(android.view.MotionEvent)
+     * <p>
      * overridden from the OnGuestureListener.
      */
     @Override
@@ -157,24 +164,27 @@ public class MainActivity extends AppCompatActivity implements OnGestureListener
         Log.d(TAG, "onLongPress: " + event.toString());
     }
 
-    /*
+    /**
      * (non-Javadoc)
-     * @see android.view.GestureDetector.OnGestureListener#onScroll(android.view.MotionEvent, android.view.MotionEvent, float, float)
      *
+     * @see android.view.GestureDetector.OnGestureListener#onScroll(android.view.MotionEvent, android.view.MotionEvent, float, float)
+     * <p>
      * overridden from the OnGuestureListener.
      */
     @Override
     public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
                             float distanceY) {
-        Toast.makeText(getApplicationContext(), "onScroll: " + e1.toString() + e2.toString(), Toast.LENGTH_SHORT).show();
-        Log.d(TAG, "onScroll: " + e1.toString() + e2.toString());
+        String msg = "onScroll: " + e1.toString() + e2.toString();
+        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+        Log.d(TAG, msg);
         return true;
     }
 
-    /*
+    /**
      * (non-Javadoc)
-     * @see android.view.GestureDetector.OnGestureListener#onShowPress(android.view.MotionEvent)
      *
+     * @see android.view.GestureDetector.OnGestureListener#onShowPress(android.view.MotionEvent)
+     * <p>
      * overridden from the OnGuestureListener.
      */
     @Override
@@ -183,10 +193,11 @@ public class MainActivity extends AppCompatActivity implements OnGestureListener
         Log.d(TAG, "onShowPress: " + event.toString());
     }
 
-    /*
+    /**
      * (non-Javadoc)
-     * @see android.view.GestureDetector.OnGestureListener#onSingleTapUp(android.view.MotionEvent)
      *
+     * @see android.view.GestureDetector.OnGestureListener#onSingleTapUp(android.view.MotionEvent)
+     * <p>
      * overridden from the OnGuestureListener.
      */
     @Override
@@ -196,10 +207,11 @@ public class MainActivity extends AppCompatActivity implements OnGestureListener
         return true;
     }
 
-    /*
+    /**
      * (non-Javadoc)
-     * @see android.view.GestureDetector.OnDoubleTapListener#onDoubleTap(android.view.MotionEvent)
      *
+     * @see android.view.GestureDetector.OnDoubleTapListener#onDoubleTap(android.view.MotionEvent)
+     * <p>
      * overridden from the OnDoubleTapListener
      */
     @Override
@@ -209,10 +221,11 @@ public class MainActivity extends AppCompatActivity implements OnGestureListener
         return true;
     }
 
-    /*
+    /**
      * (non-Javadoc)
-     * @see android.view.GestureDetector.OnDoubleTapListener#onDoubleTapEvent(android.view.MotionEvent)
      *
+     * @see android.view.GestureDetector.OnDoubleTapListener#onDoubleTapEvent(android.view.MotionEvent)
+     * <p>
      * overridden from the OnDoubleTapListener
      */
     @Override
@@ -222,10 +235,11 @@ public class MainActivity extends AppCompatActivity implements OnGestureListener
         return true;
     }
 
-    /*
+    /**
      * (non-Javadoc)
-     * @see android.view.GestureDetector.OnDoubleTapListener#onSingleTapConfirmed(android.view.MotionEvent)
      *
+     * @see android.view.GestureDetector.OnDoubleTapListener#onSingleTapConfirmed(android.view.MotionEvent)
+     * <p>
      * overridden from the OnDoubleTapListener
      */
     @Override

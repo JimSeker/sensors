@@ -13,7 +13,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
 
-/*
+/**
  * This example is using the deprecated API for the Orientation sensor.
  */
 
@@ -33,12 +33,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        cx = (TextView) findViewById(R.id.txtcx);
-        cy = (TextView) findViewById(R.id.txtcy);
-        cz = (TextView) findViewById(R.id.txtcz);
-        sx = (TextView) findViewById(R.id.txtsx);
-        sy = (TextView) findViewById(R.id.txtsy);
-        sz = (TextView) findViewById(R.id.txtsz);
+        cx =  findViewById(R.id.txtcx);
+        cy =  findViewById(R.id.txtcy);
+        cz = findViewById(R.id.txtcz);
+        sx = findViewById(R.id.txtsx);
+        sy =  findViewById(R.id.txtsy);
+        sz =  findViewById(R.id.txtsz);
         findViewById(R.id.Button01).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
