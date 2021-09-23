@@ -1,6 +1,9 @@
 package edu.cs4730.input;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 //there is no code to see here.  Just the activity, which calls the fragment.
 
@@ -15,4 +18,5 @@ public class MainActivity extends AppCompatActivity {
 					.add(R.id.container, new MainFragment()).commit();
 		}
 	}
+
 }
