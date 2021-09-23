@@ -2,7 +2,10 @@ Android Hardware Sensor and input Examples
 ===========
 <b>eclipse/</b> has the examples in that eclipse can load. These are no longer updated.  Otherwise everything are Android Studio projects
 
-<b>Input</b> and <b>input2</b> demo the keyboard, touch, gesture listeners
+<b>Input</b> (java) demo the keyboard, touch, gesture listeners, using an imageview
+<b>Input_tk</b> (kotlin) demo the keyboard, touch, gesture listeners, using an imageview
+
+<b>input2</b> demo the keyboard, touch, gesture listeners using the whole screen.
 
 <b>pitchrollX</b> demo the sensors in the device, like accelerometer, meagnetic_field (<b>pitchroll3</b>), orientation (<b>pitchroll</b>)
 
