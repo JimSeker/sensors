@@ -10,7 +10,17 @@ Android Hardware Sensor and input Examples
 
 <b>input2_tk</b> (kotlin) demo the keyboard, touch, gesture listeners using the whole screen.
 
-<b>pitchrollX</b> demo the sensors in the device, like accelerometer, meagnetic_field (<b>pitchroll3</b>), orientation (<b>pitchroll</b>)
+<b>pitchroll</b> demo the sensors in the device with orientation
+
+<b>pitchroll_tk</b> demo the sensors in the device with orientation
+
+<b>pitchroll2</b> demo the sensors in the device with accelerometer, meagnetic_field 
+
+<b>pitchroll2_tk</b> demo the sensors in the device with accelerometer, meagnetic_field 
+
+<b>pitchroll3</b> demo the sensors in the device with accelerometer, meagnetic_field variant from 2
+
+<b>pitchroll3_tk</b> demo the sensors in the device with accelerometer, meagnetic_field  variant from 2
 
 <b>8ball</b> is a demo using the magic 8 ball example.  It use the linear acceleration to determine if the "ball" is being shaken.
 
