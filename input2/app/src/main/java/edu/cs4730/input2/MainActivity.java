@@ -42,13 +42,6 @@ public class MainActivity extends AppCompatActivity implements OnGestureListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                .add(R.id.container, new MainFragment()).commit();
-        }
-
-
         // Instantiate the gesture detector with the
         // application context and an implementation of
         // GestureDetector.OnGestureListener
@@ -66,13 +59,8 @@ public class MainActivity extends AppCompatActivity implements OnGestureListener
     }
 
     /**
-     * (non-Javadoc)
-     *
-     * @see AppCompatActivity#onKeyDown(int, android.view.KeyEvent)
-     * <p>
      * Keyevent that comes from the activity.
      */
-
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
@@ -87,11 +75,6 @@ public class MainActivity extends AppCompatActivity implements OnGestureListener
     }
 
     /**
-     * (non-Javadoc)
-     *
-     * @see AppCompatActivity#onBackPressed()
-     * <p>
-     * <p>
      * This is really not recommended by well anyone.  You are change the default function of the device.
      * users really hate when you do that.
      */
@@ -106,10 +89,6 @@ public class MainActivity extends AppCompatActivity implements OnGestureListener
     }
 
     /**
-     * (non-Javadoc)
-     *
-     * @see android.app.Activity#onTouchEvent(android.view.MotionEvent)
-     * <p>
      * touch event that comes from he activity.
      */
     @Override
@@ -122,10 +101,6 @@ public class MainActivity extends AppCompatActivity implements OnGestureListener
     }
 
     /**
-     * (non-Javadoc)
-     *
-     * @see android.view.GestureDetector.OnGestureListener#onDown(android.view.MotionEvent)
-     * <p>
      * overridden from the OnGuestureListener.
      */
     @Override
@@ -136,10 +111,6 @@ public class MainActivity extends AppCompatActivity implements OnGestureListener
     }
 
     /**
-     * (non-Javadoc)
-     *
-     * @see android.view.GestureDetector.OnGestureListener#onFling(android.view.MotionEvent, android.view.MotionEvent, float, float)
-     * <p>
      * overridden from the OnGuestureListener.
      */
     @Override
@@ -152,10 +123,6 @@ public class MainActivity extends AppCompatActivity implements OnGestureListener
     }
 
     /**
-     * (non-Javadoc)
-     *
-     * @see android.view.GestureDetector.OnGestureListener#onLongPress(android.view.MotionEvent)
-     * <p>
      * overridden from the OnGuestureListener.
      */
     @Override
@@ -165,10 +132,6 @@ public class MainActivity extends AppCompatActivity implements OnGestureListener
     }
 
     /**
-     * (non-Javadoc)
-     *
-     * @see android.view.GestureDetector.OnGestureListener#onScroll(android.view.MotionEvent, android.view.MotionEvent, float, float)
-     * <p>
      * overridden from the OnGuestureListener.
      */
     @Override
@@ -181,10 +144,6 @@ public class MainActivity extends AppCompatActivity implements OnGestureListener
     }
 
     /**
-     * (non-Javadoc)
-     *
-     * @see android.view.GestureDetector.OnGestureListener#onShowPress(android.view.MotionEvent)
-     * <p>
      * overridden from the OnGuestureListener.
      */
     @Override
@@ -194,10 +153,6 @@ public class MainActivity extends AppCompatActivity implements OnGestureListener
     }
 
     /**
-     * (non-Javadoc)
-     *
-     * @see android.view.GestureDetector.OnGestureListener#onSingleTapUp(android.view.MotionEvent)
-     * <p>
      * overridden from the OnGuestureListener.
      */
     @Override
@@ -208,10 +163,6 @@ public class MainActivity extends AppCompatActivity implements OnGestureListener
     }
 
     /**
-     * (non-Javadoc)
-     *
-     * @see android.view.GestureDetector.OnDoubleTapListener#onDoubleTap(android.view.MotionEvent)
-     * <p>
      * overridden from the OnDoubleTapListener
      */
     @Override
@@ -222,10 +173,6 @@ public class MainActivity extends AppCompatActivity implements OnGestureListener
     }
 
     /**
-     * (non-Javadoc)
-     *
-     * @see android.view.GestureDetector.OnDoubleTapListener#onDoubleTapEvent(android.view.MotionEvent)
-     * <p>
      * overridden from the OnDoubleTapListener
      */
     @Override
@@ -236,10 +183,6 @@ public class MainActivity extends AppCompatActivity implements OnGestureListener
     }
 
     /**
-     * (non-Javadoc)
-     *
-     * @see android.view.GestureDetector.OnDoubleTapListener#onSingleTapConfirmed(android.view.MotionEvent)
-     * <p>
      * overridden from the OnDoubleTapListener
      */
     @Override
