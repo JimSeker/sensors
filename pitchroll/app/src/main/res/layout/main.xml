@@ -1,26 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
-                                                   xmlns:tools="http://schemas.android.com/tools"
-                                                   android:layout_width="fill_parent"
-                                                   android:layout_height="fill_parent"
-                                                   android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
 
     <TextView
+        android:id="@+id/textView2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="current data: "
-        tools:layout_constraintTop_creator="1"
-        tools:layout_constraintRight_creator="1"
-        app:layout_constraintRight_toRightOf="parent"
-        tools:layout_constraintLeft_creator="1"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:id="@+id/textView2"
-        android:layout_marginTop="8dp"
-        app:layout_constraintHorizontal_bias="0.0"
         android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp" />
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="8dp"
+        android:text="current data: "
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_constraintLeft_creator="1"
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintTop_creator="1" />
 
     <TextView
         android:id="@+id/txtcx"
@@ -39,80 +38,80 @@
         android:id="@+id/txtcy"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="cy: "
-        tools:layout_constraintTop_creator="1"
         android:layout_marginTop="1dp"
+        android:text="cy: "
+        app:layout_constraintLeft_toLeftOf="@+id/txtcx"
         app:layout_constraintTop_toBottomOf="@+id/txtcx"
         tools:layout_constraintLeft_creator="1"
-        app:layout_constraintLeft_toLeftOf="@+id/txtcx" />
+        tools:layout_constraintTop_creator="1" />
 
     <TextView
         android:id="@+id/txtcz"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="cz: "
-        tools:layout_constraintTop_creator="1"
+        app:layout_constraintLeft_toLeftOf="@+id/txtcy"
         app:layout_constraintTop_toBottomOf="@+id/txtcy"
         tools:layout_constraintLeft_creator="1"
-        app:layout_constraintLeft_toLeftOf="@+id/txtcy" />
+        tools:layout_constraintTop_creator="1" />
 
     <Button
         android:id="@+id/Button01"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Save Data"
-        tools:layout_constraintTop_creator="1"
+        android:layout_marginLeft="8dp"
         android:layout_marginTop="-1dp"
+        android:text="Save Data"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtcz"
         tools:layout_constraintLeft_creator="1"
-        android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        tools:layout_constraintTop_creator="1" />
 
     <TextView
+        android:id="@+id/textView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="0dp"
         android:text="Saved data:"
-        android:id="@+id/textView"
-        tools:layout_constraintTop_creator="1"
-        tools:layout_constraintRight_creator="1"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Button01"
         tools:layout_constraintLeft_creator="1"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginTop="0dp"
-        android:layout_marginLeft="8dp"
-        app:layout_constraintHorizontal_bias="0.0" />
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintTop_creator="1" />
 
     <TextView
         android:id="@+id/txtsx"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="0dp"
         android:text="sx: "
-        tools:layout_constraintTop_creator="1"
+        app:layout_constraintLeft_toLeftOf="@+id/textView"
         app:layout_constraintTop_toBottomOf="@+id/textView"
         tools:layout_constraintLeft_creator="1"
-        app:layout_constraintLeft_toLeftOf="@+id/textView"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="0dp" />
+        tools:layout_constraintTop_creator="1" />
 
     <TextView
         android:id="@+id/txtsy"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="sy: "
-        tools:layout_constraintTop_creator="1"
         android:layout_marginTop="1dp"
+        android:text="sy: "
+        app:layout_constraintLeft_toLeftOf="@+id/txtsx"
         app:layout_constraintTop_toBottomOf="@+id/txtsx"
         tools:layout_constraintLeft_creator="1"
-        app:layout_constraintLeft_toLeftOf="@+id/txtsx" />
+        tools:layout_constraintTop_creator="1" />
 
     <TextView
         android:id="@+id/txtsz"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="sz: "
-        tools:layout_constraintTop_creator="1"
+        app:layout_constraintLeft_toLeftOf="@+id/txtsy"
         app:layout_constraintTop_toBottomOf="@+id/txtsy"
         tools:layout_constraintLeft_creator="1"
-        app:layout_constraintLeft_toLeftOf="@+id/txtsy" />
+        tools:layout_constraintTop_creator="1" />
 </androidx.constraintlayout.widget.ConstraintLayout>
