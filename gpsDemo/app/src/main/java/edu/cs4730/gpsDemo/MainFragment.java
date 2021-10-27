@@ -43,7 +43,7 @@ public class MainFragment extends Fragment {
 
         output = myView.findViewById(R.id.TextView01);
         logger("\nNOTE, if you haven't told the Sim a location, there will be errors!\n");
-        myL = (LocationManager) getActivity().getBaseContext().getSystemService(Context.LOCATION_SERVICE);
+        myL = (LocationManager) requireContext().getSystemService(Context.LOCATION_SERVICE);
         //in the activity use:
 
         startGPSDemo();
@@ -58,10 +58,10 @@ public class MainFragment extends Fragment {
         //add a location listener, here building on the fly.
 
         //first check to see if I have permissions (marshmallow) if I don't then ask, otherwise start up the demo.
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             //I'm on not explaining why, just asking for permission.
             logger("asking for permissions");
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+            ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                 MainActivity.REQUEST_FINE_ACCESS);
 
         } else {
@@ -128,9 +128,9 @@ public class MainFragment extends Fragment {
 
     //uses the Network location which is wifi and cell locations, instead of GPS.
     public void startCoarseDemo() {
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             logger("asking for permission coarse");
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+            ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
                 MainActivity.REQUEST_COARSE_ACCESS);
         } else {
             logger("Coarse I have permissions");
