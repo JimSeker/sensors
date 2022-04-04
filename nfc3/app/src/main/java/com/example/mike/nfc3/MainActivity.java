@@ -9,15 +9,14 @@ import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.Ndef;
 import android.nfc.tech.NdefFormatable;
-
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import java.io.ByteArrayOutputStream;
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
@@ -28,7 +27,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
 
     }
@@ -38,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         enableForegroundDispatchSystem();
     }
-
 
     @Override
     protected void onPause() {
@@ -63,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
     private void enableForegroundDispatchSystem() {
         Intent intent = new Intent(this, MainActivity.class).addFlags(Intent.FLAG_RECEIVER_REPLACE_PENDING);
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
 
         IntentFilter[] intentFilters = new IntentFilter[]{};
 
@@ -129,25 +126,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private NdefRecord createTextRecord(String content) {
-        try {
-            byte[] language;
-            language = Locale.getDefault().getLanguage().getBytes("UTF-8");
+        byte[] language;
+        language = Locale.getDefault().getLanguage().getBytes(StandardCharsets.UTF_8);
 
-            final byte[] text = content.getBytes("UTF-8");
-            final int languageSize = language.length;
-            final int textLength = text.length;
-            final ByteArrayOutputStream payload = new ByteArrayOutputStream(1 + languageSize + textLength);
+        final byte[] text = content.getBytes(StandardCharsets.UTF_8);
+        final int languageSize = language.length;
+        final int textLength = text.length;
+        final ByteArrayOutputStream payload = new ByteArrayOutputStream(1 + languageSize + textLength);
 
-            payload.write((byte) (languageSize & 0x1F));
-            payload.write(language, 0, languageSize);
-            payload.write(text, 0, textLength);
+        payload.write((byte) (languageSize & 0x1F));
+        payload.write(language, 0, languageSize);
+        payload.write(text, 0, textLength);
 
-            return new NdefRecord(NdefRecord.TNF_WELL_KNOWN, NdefRecord.RTD_TEXT, new byte[0], payload.toByteArray());
-
-        } catch (UnsupportedEncodingException e) {
-            Log.e("createTextRecord", e.getMessage());
-        }
-        return null;
+        return new NdefRecord(NdefRecord.TNF_WELL_KNOWN, NdefRecord.RTD_TEXT, new byte[0], payload.toByteArray());
     }
 
     private NdefMessage createNdefMessage(String content) {

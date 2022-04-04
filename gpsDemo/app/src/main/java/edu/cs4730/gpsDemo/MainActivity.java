@@ -1,73 +1,232 @@
 package edu.cs4730.gpsDemo;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.List;
+import java.util.Map;
+
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
-
-//Nothing to see here, go the MainFragment.
+/**
+ * this is a demo to show how to get location (ie gps) information from the device.
+ * shows a listener changes and then just get the current (last known) information at the bottom.
+ * <p/>
+ * if using the emulator, set the location in the emulator before running this code, otherwise
+ * you may get errors or just really odd results.
+ */
 
 public class MainActivity extends AppCompatActivity {
     String TAG = "MainActivity";
     public static final int REQUEST_FINE_ACCESS = 0;
     public static final int REQUEST_COARSE_ACCESS = 1;
-    MainFragment myFrag;
+    TextView logger;
+    LocationManager myL;
+
+    private String[] REQUIRED_PERMISSIONS;
+    ActivityResultLauncher<String[]> rpl;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if (savedInstanceState == null) {
-            myFrag = new MainFragment();
-            getSupportFragmentManager().beginTransaction()
-                .add(R.id.container, myFrag).commit();
+
+        //full set of permissions, both coarse and fine
+        REQUIRED_PERMISSIONS = new String[]{"android.permission.ACCESS_FINE_LOCATION", "android.permission.ACCESS_COARSE_LOCATION"};
+        //based on which permissions, then call the right one.
+        rpl = registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(),
+            new ActivityResultCallback<Map<String, Boolean>>() {
+                @Override
+                public void onActivityResult(Map<String, Boolean> isGranted) {
+                    boolean fine = false, coarse = false;
+                    for (Map.Entry<String, Boolean> x : isGranted.entrySet()) {
+                        logthis(x.getKey() + " is " + x.getValue());
+                        if (x.getKey().equals("android.permission.ACCESS_FINE_LOCATION") && x.getValue()) {
+                            fine = true;
+
+                        } else if (x.getKey().equals("android.permission.ACCESS_COARSE_LOCATION") && x.getValue()) {
+                            coarse = true;
+                        }
+                    }
+                    if (fine)
+                        startGPSDemo();
+                    else if (coarse)
+                        startCoarseDemo();
+                }
+            }
+        );
+
+        logger = findViewById(R.id.TextView01);
+        logthis("\nNOTE, if you haven't told the Sim a location, there will be errors!\n");
+        myL = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        startDemo();
+
+    }
+
+    public void startDemo() {
+        boolean fine = false, coarse = false;
+        for (String permission : REQUIRED_PERMISSIONS) {
+            if (ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED) {
+                if (permission.equals("android.permission.ACCESS_FINE_LOCATION")) {
+                    fine = true;
+
+                } else if (permission.equals("android.permission.ACCESS_COARSE_LOCATION")) {
+                    coarse = true;
+                }
+            }
+        }
+        if (fine)
+            startGPSDemo();
+        else if (coarse)
+            startCoarseDemo();
+        else
+            rpl.launch(REQUIRED_PERMISSIONS);
+    }
+
+
+    //use the GPS location for this device.
+    public void startGPSDemo() {
+
+        //first check to see if I have permissions to.  This should not be necessary.  just in case.
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            rpl.launch(REQUIRED_PERMISSIONS);
+        } else {
+            logthis("GPS/Fine I have permissions");
+            myL.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0,
+                new LocationListener() {
+                    @Override
+                    public void onLocationChanged(Location location) {
+                        //if we have location information, update the screen here.  just lat and lot, others
+                        //are shown if you may need them.
+                        if (location != null) {
+                            logthis("Fine onLocationChanged called");
+                    /*	        location.getAltitude();
+					        location.getLatitude();
+	    			        location.getLongitude();
+	    			        location.getTime();
+	    			        location.getAccuracy();
+	    			        location.getSpeed();
+	    			        location.getProvider();
+					 */
+                            logthis(location.getLatitude() + " " + location.getLongitude());
+
+                        }
+                    }
+
+                    @Override
+                    public void onProviderDisabled(String provider) {
+                        logthis("Fine Provider is disabled");
+                    }
+
+                    @Override
+                    public void onProviderEnabled(String provider) {
+                        logthis("Find Provider is enabled");
+                    }
+
+                    @Override
+                    public void onStatusChanged(String provider, int status, Bundle extras) {
+                        logthis("Fine Provider status changed");
+                    }
+                });
+
+            //Get a list of providers
+            //could also use  String = getBestProvider(Criteria  criteria, boolean enabledOnly)
+            List<String> mylist = myL.getProviders(true);
+            Location loc = null;
+            String networkstr;
+            for (int i = 0; i < mylist.size() && loc == null; i++) {
+                networkstr = mylist.get(i);
+                logthis("Attempting: " + networkstr);
+                loc = myL.getLastKnownLocation(networkstr);
+            }
+            if (loc != null) {
+                double sLatitude = loc.getLatitude();
+                double sLongitude = loc.getLongitude();
+                String location = " " + sLatitude + "," + sLongitude;
+                logthis(location);
+            } else {
+                logthis("\nNo location can be found.\n");
+            }
         }
     }
 
-    /**
-     * Callback received when a permissions request has been completed.
-     */
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        Log.v(TAG, "onRequest result called.");
-        switch (requestCode) {
-            case REQUEST_FINE_ACCESS:
-                //received result for GPS access
-                Log.v(TAG, "Received response for gps permission request.");
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // permission was granted
-                    Log.v(TAG, permissions[0] + " permission has now been granted. Showing preview.");
-                    Toast.makeText(this, "GPS access granted",
-                        Toast.LENGTH_SHORT).show();
-                    myFrag.startGPSDemo();  //call the method again, so the gps demo will start up.
-                } else {
-                    // permission denied,    Disable this feature or close the app.
-                    Log.v(TAG, "GPS permission was NOT granted.");
-                    Toast.makeText(this, "GPS access NOT granted", Toast.LENGTH_SHORT).show();
-                }
 
-                return;
-            case REQUEST_COARSE_ACCESS:
-                //received result for cell/wifi location (IE coarse location access)
-                Log.v(TAG, "Received response for coarse access permissions request.");
-                if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Log.v(TAG, permissions[0] + " permission has now been granted. Showing preview.");
-                    // permission was granted
-                    Toast.makeText(this, "cell/wifi location access granted", Toast.LENGTH_SHORT).show();
-                    myFrag.startCoarseDemo();  //call the method again, so the course demo will start up.
-                } else {
-                    // permission denied
-                    Log.v(TAG, "coarse location permissions were NOT granted.");
-                    Toast.makeText(this, "cell/wifi location access granted", Toast.LENGTH_SHORT).show();
-                }
-                return;
-            default:
-                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    //uses the Network location which is wifi and cell locations, instead of GPS.
+    public void startCoarseDemo() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            rpl.launch(REQUIRED_PERMISSIONS);
+        } else {
+            logthis("Coarse I have permissions");
+            myL.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0,
+                new LocationListener() {
+                    @Override
+                    public void onLocationChanged(Location location) {
+                        //if we have location information, update the screen here.  just lat and lot, others
+                        //are shown if you may need them.
+                        if (location != null) {
+                            logthis("Coarse onLocationChanged called");
+                            logthis(location.getLatitude() + " " + location.getLongitude());
+                        }
+                    }
+
+                    @Override
+                    public void onProviderDisabled(String provider) {
+                        logthis("Coarse Provider is disabled");
+                    }
+
+                    @Override
+                    public void onProviderEnabled(String provider) {
+                        logthis("Coarse Provider is enabled");
+
+                    }
+
+                    @Override
+                    public void onStatusChanged(String provider, int status, Bundle extras) {
+                        logthis("Coarse Provider status changed");
+                    }
+                });
+
+            //Get a list of providers
+            //could also use  String = getBestProvider(Criteria  criteria, boolean enabledOnly)
+            List<String> mylist = myL.getProviders(true);
+            Location loc = null;
+            String networkstr;
+            for (int i = 0; i < mylist.size() && loc == null; i++) {
+                networkstr = mylist.get(i);
+                logthis("Attempting: " + networkstr);
+                loc = myL.getLastKnownLocation(networkstr);
+            }
+            if (loc != null) {
+                double sLatitude = loc.getLatitude();
+                double sLongitude = loc.getLongitude();
+                String location = " " + sLatitude + "," + sLongitude;
+                logthis(location);
+            } else {
+                logthis("\nNo location can be found.\n");
+            }
+
         }
+    }
+
+    //simple log function to log to both a textivew and the logcat.
+    void logthis(String item) {
+        logger.append(item + "\n");
+        Log.d(TAG, item);
     }
 }

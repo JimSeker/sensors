@@ -13,7 +13,7 @@
             android:id="@+id/write_tag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/write_to_tag"/>
+            android:text="@string/write_to_tag" />
     </LinearLayout>
 
     <EditText
@@ -21,5 +21,5 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="top"
-        android:text="@string/default_note_text"/>
+        android:hint="@string/default_note_text" />
 </LinearLayout>

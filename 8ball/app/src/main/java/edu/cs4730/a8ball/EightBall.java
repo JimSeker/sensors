@@ -13,35 +13,36 @@ import android.view.View;
 import java.util.Random;
 
 /**
- *  Eight ball.
+ * Eight ball.
  */
 public class EightBall extends View {
-    int mwidth =0;
+    int mwidth = 0;
     int mheight = 0;
     Bitmap bg;
     Paint mPaint;
     int AnswerNum = 1;
     Random myRandom = new Random();
-    String Answers[] = { "Signs point to yes",
-            "Yes",
-            "Reply hazy, try again",
-            "Without a doubt",
-            "My sources say no",
-            "As I see it, yes",
-            "You may rely on it",
-            "Concentrate and ask again",
-            "Outlook not so good",
-            "It is decidedly so",
-            "Better not tell you now",
-            "Very doubtful",
-            "Yes - definitely",
-            "It is certain",
-            "Cannot predict now",
-            "Most likely",
-            "Ask again later",
-            "My reply is no",
-            "Outlook good",
-            "Don\'t count on it"};
+    String[] Answers = {
+        "Signs point to yes",
+        "Yes",
+        "Reply hazy, try again",
+        "Without a doubt",
+        "My sources say no",
+        "As I see it, yes",
+        "You may rely on it",
+        "Concentrate and ask again",
+        "Outlook not so good",
+        "It is decidedly so",
+        "Better not tell you now",
+        "Very doubtful",
+        "Yes - definitely",
+        "It is certain",
+        "Cannot predict now",
+        "Most likely",
+        "Ask again later",
+        "My reply is no",
+        "Outlook good",
+        "Don\'t count on it"};
 
     public EightBall(Context context) {
         super(context);
@@ -65,7 +66,7 @@ public class EightBall extends View {
         mPaint = new Paint();
         mPaint.setColor(Color.WHITE);
         mPaint.setStyle(Paint.Style.FILL);
-        mPaint.setTextSize(mPaint.getTextSize()*scale); //scale the font size too
+        mPaint.setTextSize(mPaint.getTextSize() * scale); //scale the font size too
     }
 
     /*
@@ -76,29 +77,26 @@ public class EightBall extends View {
         invalidate();
     }
 
-
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        canvas.drawBitmap(bg,0,0,mPaint);
-        canvas.drawText(Answers[AnswerNum],mwidth/2,mheight/2,mPaint);
-
+        canvas.drawBitmap(bg, 0, 0, mPaint);
+        canvas.drawText(Answers[AnswerNum], mwidth / 2f, mheight / 2f, mPaint);
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
-        Log.i("MSW", ""+getMeasuredWidth());
-        Log.i("MSH", ""+getMeasuredHeight());
+        Log.i("MSW", "" + getMeasuredWidth());
+        Log.i("MSH", "" + getMeasuredHeight());
 
         if (bg != null) {
             mwidth = bg.getWidth();
             mheight = bg.getHeight();
         }
         setMeasuredDimension(mwidth, mheight);
-
     }
 
 }
