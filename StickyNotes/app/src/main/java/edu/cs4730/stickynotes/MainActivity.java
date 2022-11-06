@@ -40,6 +40,16 @@ import android.widget.Toast;
 
 import java.io.IOException;
 
+
+/**
+ * so about half of this example is @Deprecated in 29.  removing the enable and disable stops
+ * this example from working in the foreground.  It will read in the background without them.
+ * <p>
+ * Googles doc's says stupid things like use bluetooth instead.
+ * https://developer.android.com/reference/android/nfc/NfcAdapter.CreateNdefMessageCallback#createNdefMessage(android.nfc.NfcEvent)
+ */
+
+
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "stickynotes";
     private boolean mResumed = false;
@@ -63,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Handle all of our received NFC intents in this activity.
         mNfcPendingIntent = PendingIntent.getActivity(this, 0,
-            new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), PendingIntent.FLAG_IMMUTABLE);
+            new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), PendingIntent.FLAG_MUTABLE);
 
         // Intent filters for reading a note from a tag or exchanging over p2p.
         IntentFilter ndefDetected = new IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED);
@@ -85,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
         mResumed = true;
         // Sticky notes received from Android
         if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(getIntent().getAction())) {
+            Log.wtf(TAG, "on resume got something?");
             NdefMessage[] messages = getNdefMessages(getIntent());
             byte[] payload = messages[0].getRecords()[0].getPayload();
             setNoteBody(new String(payload));
@@ -97,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         mResumed = false;
-        // mNfcAdapter.disableForegroundNdefPush(this); //deprecated
+        mNfcAdapter.disableForegroundNdefPush(this); //deprecated
         // the setNdefPushMessage version understands onPause/onResume, so no need to turn off/on.
     }
 
@@ -106,12 +117,14 @@ public class MainActivity extends AppCompatActivity {
         super.onNewIntent(intent);
         // NDEF exchange mode
         if (!mWriteMode && NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction())) {
+            Log.wtf(TAG, "Reading something");
             NdefMessage[] msgs = getNdefMessages(intent);
             promptForContent(msgs[0]);
         }
 
         // Tag writing mode
         if (mWriteMode && NfcAdapter.ACTION_TAG_DISCOVERED.equals(intent.getAction())) {
+            Log.wtf(TAG, "writing something");
             Tag detectedTag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
             writeTag(getNoteAsNdef(), detectedTag);
         }
@@ -221,13 +234,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void enableNdefExchangeMode() {
-        // mNfcAdapter.enableForegroundNdefPush(MainActivity.this, getNoteAsNdef());  //deprecated.
+        mNfcAdapter.enableForegroundNdefPush(MainActivity.this, getNoteAsNdef());  //deprecated, take this out and it won't write.
         mNfcAdapter.setNdefPushMessage(getNoteAsNdef(), MainActivity.this);
         mNfcAdapter.enableForegroundDispatch(this, mNfcPendingIntent, mNdefExchangeFilters, null);
     }
 
     private void disableNdefExchangeMode() {
-        // mNfcAdapter.disableForegroundNdefPush(this);  //deprecated.
+        mNfcAdapter.disableForegroundNdefPush(this);  //deprecated.  removing this breaks the app.
         mNfcAdapter.setNdefPushMessage(null, MainActivity.this);  //turn it off.
         mNfcAdapter.disableForegroundDispatch(this);
     }
