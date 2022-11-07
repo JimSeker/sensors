@@ -28,9 +28,7 @@ Android Hardware Sensor and input Examples
 
 <b>BiometricPromptDemo</b> is an API 28 version to use fingerprints (and more later if the phones support more biometrics).  It needs some work, but is a functional example.  For the fingerprint demos, see legacy.
 
-<b>nfc3</b> is an example of to set a nfc tag.
-
-<b>StickyNotes</b> This example code is more complex, but can read and write nfc tags.
+<b>nfc/</b>  These are NFC examples.
 
 <b>legacy/</b> are old examples that are no longer updated.  
 

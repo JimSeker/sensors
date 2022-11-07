@@ -12,6 +12,9 @@ These are legacy projects and are no longer updated.
 
 <b>nfcDemo3</b> well send a file via nfc beam.  It only needs to be installed on one device.  fair warning, beaming is pretty slow, so don't try this with large files unless you can set the devices correctly on top of each other.  beam was removed in android 10.
 
+<b>nfc3</b> is an example of to set a nfc tag, I don't think it app works anymore past api 29.
+
+<b>StickyNotes</b> This example code is more complex, but can read and write nfc tags.
 
 These are example code for University of Wyoming, Cosc 4730 Mobile Programming course and Cosc 4735 Advanced Mobile Programming course.
 All examples are for Android.
