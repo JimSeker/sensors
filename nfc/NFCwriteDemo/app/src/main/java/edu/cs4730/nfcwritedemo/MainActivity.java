@@ -23,9 +23,12 @@ import java.io.IOException;
 
 
 /**
- * This app is a companion to the NFCreadDemo.  Note, the write should be one one device and the read on a seperate device.  Otherwise it confuses android.
+ * This app is a companion to the NFCreadDemo.  Note, the write should be one one device and the read on a separate device.  Otherwise it confuses android.
  * <p>
  * This take data provided by the user in edittext box and will wrote to a device/tag (works best with a nfc tag).
+ *
+ *  About half of this example is deeprecated in api 29.  Googles doc's says stupid things like use bluetooth instead.
+ *  https://developer.android.com/reference/android/nfc/NfcAdapter.CreateNdefMessageCallback#createNdefMessage(android.nfc.NfcEvent)
  */
 
 
