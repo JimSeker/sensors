@@ -32,8 +32,6 @@ import androidx.core.content.ContextCompat;
 
 public class MainActivity extends AppCompatActivity {
     String TAG = "MainActivity";
-    public static final int REQUEST_FINE_ACCESS = 0;
-    public static final int REQUEST_COARSE_ACCESS = 1;
     TextView logger;
     LocationManager myL;
 
