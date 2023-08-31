@@ -1,12 +1,11 @@
 package edu.cs4730.input_tk
 
+
 import android.annotation.SuppressLint
-import android.content.Context
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.GestureDetector
 import android.view.GestureDetector.SimpleOnGestureListener
@@ -15,9 +14,9 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.View.OnLongClickListener
 import android.view.View.OnTouchListener
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import edu.cs4730.input_tk.databinding.ActivityMainBinding
 
 /**
  * An example of how to access the touch, tap, double, and Gestures on the screen.
@@ -27,48 +26,32 @@ import android.widget.Toast
  *
  */
 
-@SuppressLint("StaticFieldLeak")
+@SuppressLint("SetTextI18n")
+
 class MainActivity : AppCompatActivity() {
 
-    companion object {
-        lateinit var label1: TextView
-        lateinit var label2: TextView
-        lateinit var label3: TextView
-        lateinit var label4: TextView
-        lateinit var iv: ImageView
+    lateinit var binding: ActivityMainBinding
+    var myManager: SensorManager? = null
+    lateinit var accSensor: Sensor
+    lateinit var sensors: List<Sensor>
+    var mySensorListener: SensorEventListener? = null
 
-        lateinit var context: Context
-        var myManager: SensorManager? = null
-        lateinit var accSensor: Sensor
-        lateinit var sensors: List<Sensor>
-        var mySensorListener: SensorEventListener? = null
-
-        lateinit var mGestureDetector: GestureDetector
-        lateinit var mGestureListener: OnTouchListener
-        val chars = charArrayOf('a', 'b', 'c', 'd', 'e')
-
-    }
+    lateinit var mGestureDetector: GestureDetector
+    lateinit var mGestureListener: OnTouchListener
+    val chars = charArrayOf('a', 'b', 'c', 'd', 'e')
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        context = this
-        label1 = findViewById(R.id.label1)
-        label2 = findViewById(R.id.label2)
-        label3 = findViewById(R.id.label3)
-        label4 = findViewById(R.id.label4)
-        iv = findViewById(R.id.ImageView01)
-
-
-        iv.setOnKeyListener(myKeyListener())
-
-        iv.setOnClickListener(myClickListener())
-        iv.setOnLongClickListener(myLongClickListener())
+        binding.iv.setOnKeyListener(myKeyListener())
+        binding.iv.setOnClickListener(myClickListener())
+        binding.iv.setOnLongClickListener(myLongClickListener())
 
         mGestureListener = myTouchListener()
-        mGestureDetector = GestureDetector(context, MyGestureDetector())
-        iv.setOnTouchListener(mGestureListener);
+        mGestureDetector = GestureDetector(this, MyGestureDetector())
+        binding.iv.setOnTouchListener(mGestureListener); //lint is wrong, it is handled.
     }
 
     override fun onPause() {
@@ -82,53 +65,54 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    internal class myKeyListener : View.OnKeyListener {
+    inner class myKeyListener : View.OnKeyListener {
+
         override fun onKey(v: View, keyCode: Int, event: KeyEvent): Boolean {
             val key = event.getMatch(chars)
             if (key != '\u0000') {  //no idea why it won't let me use \0
-                label1.text = "Key: $key"
+                binding.label1.text = "Key: $key"
                 return true
             } else if (keyCode == KeyEvent.KEYCODE_MENU) {
-                label1.text = "Key: menu"
+                binding.label1.text = "Key: menu"
                 return false //allow android to still use the key as well.
             } else if (keyCode == KeyEvent.KEYCODE_BACK) {
-                label1.text = "Key: back"
+                binding.label1.text = "Key: back"
                 return true //don't allow android, since it kills the program.
             } else if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN) {
-                label2.text = "Navigation: DOWN"
+                binding.label2.text = "Navigation: DOWN"
                 return true
             } else if (keyCode == KeyEvent.KEYCODE_DPAD_UP) {
-                label2.text = "Navigation: UP"
+                binding.label2.text = "Navigation: UP"
                 return true
             } else if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {
-                label2.text = "Navigation: LEFT"
+                binding.label2.text = "Navigation: LEFT"
                 return true
             } else if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
-                label2.text = "Navigation: RIGHT"
+                binding.label2.text = "Navigation: RIGHT"
                 return true
             } else if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER) {
-                label2.text = "Navigation: CENTER"
+                binding.label2.text = "Navigation: CENTER"
                 return true
             }
-            label1.text = "Key: "
+            binding.label1.text = "Key: "
             return false
         }
     }
 
-    internal class myClickListener : View.OnClickListener {
+    inner class myClickListener : View.OnClickListener {
         override fun onClick(v: View) {
-            Toast.makeText(context, "Click!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(applicationContext, "Click!", Toast.LENGTH_SHORT).show()
         }
     }
 
-    internal class myLongClickListener : OnLongClickListener {
+    inner class myLongClickListener : OnLongClickListener {
         override fun onLongClick(v: View): Boolean {
-            Toast.makeText(context, "Long Click!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(applicationContext, "Long Click!", Toast.LENGTH_SHORT).show()
             return true
         }
     }
 
-    internal class myTouchListener : OnTouchListener {
+    inner class myTouchListener : OnTouchListener {
         override fun onTouch(v: View, event: MotionEvent): Boolean {
             if (mGestureDetector.onTouchEvent(event)) return true
 
@@ -137,10 +121,11 @@ class MainActivity : AppCompatActivity() {
             // Retrieve the new x and y touch positions
             val x = event.x.toInt()
             val y = event.y.toInt()
-            label3.text = "Touch: x=$x y=$y"
+            binding.label3.text = "Touch: x=$x y=$y"
             when (action) {
+                MotionEvent.ACTION_UP -> v.performClick()
                 MotionEvent.ACTION_MOVE -> {
-                    label2.text = "Navigation: touch move"
+                    binding.label2.text = "Navigation: touch move"
                     return true
                 }
             }
@@ -148,46 +133,45 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    internal class MyGestureDetector : SimpleOnGestureListener() {
+    inner class MyGestureDetector : SimpleOnGestureListener() {
+
+        private val SWIPE_MIN_DISTANCE = 100 //150
+        private val SWIPE_MAX_OFF_PATH = 100
+        private val SWIPE_THRESHOLD_VELOCITY = 75 //100
+
         override fun onFling(
-            e1: MotionEvent,
-            e2: MotionEvent,
-            velocityX: Float,
-            velocityY: Float
+            e1: MotionEvent, e2: MotionEvent, velocityX: Float, velocityY: Float
         ): Boolean {
             val dX = e2.x - e1.x
             val dY = e1.y - e2.y
-            if (Math.abs(dY) < SWIPE_MAX_OFF_PATH &&
-                Math.abs(velocityX) >= SWIPE_THRESHOLD_VELOCITY &&
-                Math.abs(dX) >= SWIPE_MIN_DISTANCE ) {
+            if (Math.abs(dY) < SWIPE_MAX_OFF_PATH && Math.abs(velocityX) >= SWIPE_THRESHOLD_VELOCITY && Math.abs(
+                    dX
+                ) >= SWIPE_MIN_DISTANCE
+            ) {
                 if (dX > 0) {
-                    Toast.makeText(context, "Right Swipe", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(applicationContext, "Right Swipe", Toast.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(context, "Left Swipe", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(applicationContext, "Left Swipe", Toast.LENGTH_SHORT).show()
                 }
                 return true
-            } else if (Math.abs(dX) < SWIPE_MAX_OFF_PATH &&
-                Math.abs(velocityY) >= SWIPE_THRESHOLD_VELOCITY
-                && Math.abs(dY) >= SWIPE_MIN_DISTANCE ) {
+            } else if (Math.abs(dX) < SWIPE_MAX_OFF_PATH && Math.abs(velocityY) >= SWIPE_THRESHOLD_VELOCITY && Math.abs(
+                    dY
+                ) >= SWIPE_MIN_DISTANCE
+            ) {
                 if (dY > 0) {
-                    Toast.makeText(context, "Up Swipe", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(applicationContext, "Up Swipe", Toast.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(context, "Down Swipe", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(applicationContext, "Down Swipe", Toast.LENGTH_SHORT).show()
                 }
                 return true
             }
             return false
         }
 
-        companion object {
-            private const val SWIPE_MIN_DISTANCE = 100 //150
-            private const val SWIPE_MAX_OFF_PATH = 100
-            private const val SWIPE_THRESHOLD_VELOCITY = 75 //100
-        }
     }
 
-    fun registerAccelerometer() {
-        myManager = context.getSystemService(SENSOR_SERVICE) as SensorManager
+    private fun registerAccelerometer() {
+        myManager = getSystemService(SENSOR_SERVICE) as SensorManager
         //        sensors = myManager.getSensorList(Sensor.TYPE_ACCELEROMETER);
 //        if(sensors.size() > 0)
 //          accSensor = sensors.get(0);
@@ -207,8 +191,8 @@ class MainActivity : AppCompatActivity() {
                     //Toast.makeText(context, "Orientation: x:"+sx+" y:"+sy, Toast.LENGTH_SHORT).show();
                     if (sx >= SensorThreshold || sx <= -SensorThreshold || //x value is valid
                         sy >= SensorThreshold + Sensorhold || //y value is valid
-                        sy <= -SensorThreshold + Sensorhold ) {
-                        /*
+                        sy <= -SensorThreshold + Sensorhold
+                    ) {/*
         				 * valid value based on thresholding, now figure out
         				 * which direction to take is x ">" then y including negative direction
         				 * note -x is left is lifted, +x is right is lifted  (based on default orientation)
@@ -217,14 +201,12 @@ class MainActivity : AppCompatActivity() {
         				 */
                         if (Math.abs(sx) >= Math.abs(sy)) {  //sx value is the one to take
                             if (sx > 0) //go right lifted, so go left
-                                label4.text = "Sensor: x:$sx y:$sy  Rightside up"
-                            else
-                                label4.text = "Sensor: x:$sx y:$sy  leftside up"
+                                binding.label4.text = "Sensor: x:$sx y:$sy  Rightside up"
+                            else binding.label4.text = "Sensor: x:$sx y:$sy  leftside up"
                         } else {  //up or down, sy value is bigger.
-                            if (sy > 0)
-                                label4.text = "Sensor: x:$sx y:$sy  Bottom  up"
+                            if (sy > 0) binding.label4.text = "Sensor: x:$sx y:$sy  Bottom  up"
                             else  //TOP is lifted, so go down
-                                label4.text = "Sensor: x:$sx y:$sy top up"
+                                binding.label4.text = "Sensor: x:$sx y:$sy top up"
                         }
                     }
                 }

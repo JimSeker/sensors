@@ -63,6 +63,7 @@ class MainActivity : AppCompatActivity(), OnGestureListener, OnDoubleTapListener
      * This is really not recommended by well anyone.  You are change the default function of the device.
      * users really hate when you do that.
      */
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         // do something on back.
         Log.d(TAG, "onBackPressed: it was pushed.")

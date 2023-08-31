@@ -8,8 +8,6 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 import java.util.Map;
@@ -17,10 +15,11 @@ import java.util.Map;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
+import edu.cs4730.gpsDemo.databinding.ActivityMainBinding;
 
 /**
  * this is a demo to show how to get location (ie gps) information from the device.
@@ -32,7 +31,7 @@ import androidx.core.content.ContextCompat;
 
 public class MainActivity extends AppCompatActivity {
     String TAG = "MainActivity";
-    TextView logger;
+    ActivityMainBinding binding;
     LocationManager myL;
 
     private String[] REQUIRED_PERMISSIONS;
@@ -42,7 +41,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         //full set of permissions, both coarse and fine
         REQUIRED_PERMISSIONS = new String[]{"android.permission.ACCESS_FINE_LOCATION", "android.permission.ACCESS_COARSE_LOCATION"};
@@ -69,7 +69,6 @@ public class MainActivity extends AppCompatActivity {
             }
         );
 
-        logger = findViewById(R.id.TextView01);
         logthis("\nNOTE, if you haven't told the Sim a location, there will be errors!\n");
         myL = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
@@ -224,7 +223,7 @@ public class MainActivity extends AppCompatActivity {
 
     //simple log function to log to both a textivew and the logcat.
     void logthis(String item) {
-        logger.append(item + "\n");
+        binding.logger.append(item + "\n");
         Log.d(TAG, item);
     }
 }

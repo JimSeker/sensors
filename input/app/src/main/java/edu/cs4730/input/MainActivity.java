@@ -1,5 +1,6 @@
 package edu.cs4730.input;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -10,13 +11,13 @@ import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import edu.cs4730.input.databinding.ActivityMainBinding;
 
 /**
  * An example of how to access the touch, tap, double, and Gestures on the screen.
@@ -24,11 +25,10 @@ import androidx.appcompat.app.AppCompatActivity;
  * <p>
  * The orientation sensor is also used, and yea, it's is depreciated.
  */
-
+@SuppressLint("SetTextI18n")
 public class MainActivity extends AppCompatActivity {
 
-    TextView label1, label2, label3, label4;
-    ImageView iv;
+    ActivityMainBinding binding;
     private SensorManager myManager;
     private Sensor accSensor;
     private List<Sensor> sensors;
@@ -40,21 +40,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        label1 = findViewById(R.id.label1);
-        label2 = findViewById(R.id.label2);
-        label3 = findViewById(R.id.label3);
-        label4 = findViewById(R.id.label4);
-        iv = findViewById(R.id.ImageView01);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        iv.setOnKeyListener(new myKeyListener());
+        binding.iv.setOnKeyListener(new myKeyListener());
 
-        iv.setOnClickListener(new myClickListener());
-        iv.setOnLongClickListener(new myLongClickListener());
+        binding.iv.setOnClickListener(new myClickListener());
+        binding.iv.setOnLongClickListener(new myLongClickListener());
 
         mGestureListener = new myTouchListener();
         mGestureDetector = new GestureDetector(this, new MyGestureDetector());
-        iv.setOnTouchListener(mGestureListener);
+        binding.iv.setOnTouchListener(mGestureListener);  //lint is wrong, it is handled.
 
     }
 
@@ -77,31 +73,31 @@ public class MainActivity extends AppCompatActivity {
             //
             char key = event.getMatch(chars);
             if (key != '\0') {
-                label1.setText("Key: " + key);
+                binding.label1.setText("Key: " + key);
                 return true;
             } else if (keyCode == KeyEvent.KEYCODE_MENU) {
-                label1.setText("Key: menu");
+                binding.label1.setText("Key: menu");
                 return false;  //allow android to still use the key as well.
             } else if (keyCode == KeyEvent.KEYCODE_BACK) {
-                label1.setText("Key: back");
+                binding.label1.setText("Key: back");
                 return true;  //don't allow android, since it kills the program.
             } else if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN) {
-                label2.setText("Navigation: DOWN");
+                binding.label2.setText("Navigation: DOWN");
                 return true;
             } else if (keyCode == KeyEvent.KEYCODE_DPAD_UP) {
-                label2.setText("Navigation: UP");
+                binding.label2.setText("Navigation: UP");
                 return true;
             } else if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {
-                label2.setText("Navigation: LEFT");
+                binding.label2.setText("Navigation: LEFT");
                 return true;
             } else if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
-                label2.setText("Navigation: RIGHT");
+                binding.label2.setText("Navigation: RIGHT");
                 return true;
             } else if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER) {
-                label2.setText("Navigation: CENTER");
+                binding.label2.setText("Navigation: CENTER");
                 return true;
             }
-            label1.setText("Key: ");
+            binding.label1.setText("Key: ");
             return false;
         }
 
@@ -136,11 +132,13 @@ public class MainActivity extends AppCompatActivity {
             // Retrieve the new x and y touch positions
             int x = (int) event.getX();
             int y = (int) event.getY();
-            label3.setText("Touch: x=" + x + " y=" + y);
+            binding.label3.setText("Touch: x=" + x + " y=" + y);
             switch (action) {
-                //case MotionEvent.ACTION_DOWN:
+                case MotionEvent.ACTION_UP:  //removes a lint warning.
+                    v.performClick();
+                    break;
                 case MotionEvent.ACTION_MOVE:
-                    label2.setText("Navigation: touch move");
+                    binding.label2.setText("Navigation: touch move");
                     return true;
             }
 
@@ -171,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
                 Math.abs(velocityY) >= SWIPE_THRESHOLD_VELOCITY &&
                 Math.abs(dY) >= SWIPE_MIN_DISTANCE) {
                 if (dY > 0) {
-                    Toast.makeText(getApplicationContext(), "Up Swipe", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Up Swipe", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getApplicationContext(), "Down Swipe", Toast.LENGTH_SHORT).show();
                 }
@@ -213,14 +211,14 @@ public class MainActivity extends AppCompatActivity {
                          */
                         if (Math.abs(sx) >= Math.abs(sy)) {  //sx value is the one to take
                             if (sx > 0) //go right lifted, so go left
-                                label4.setText("Sensor: x:" + sx + " y:" + sy + "  Rightside up");
+                                binding.label4.setText("Sensor: x:" + sx + " y:" + sy + "  Rightside up");
                             else
-                                label4.setText("Sensor: x:" + sx + " y:" + sy + "  leftside up");
+                                binding.label4.setText("Sensor: x:" + sx + " y:" + sy + "  leftside up");
                         } else {  //up or down, sy value is bigger.
                             if (sy > 0)
-                                label4.setText("Sensor: x:" + sx + " y:" + sy + "  Bottom  up");
+                                binding.label4.setText("Sensor: x:" + sx + " y:" + sy + "  Bottom  up");
                             else {//TOP is lifted, so go down
-                                label4.setText("Sensor: x:" + sx + " y:" + sy + " top up");
+                                binding.label4.setText("Sensor: x:" + sx + " y:" + sy + " top up");
                             }
                         }
 
