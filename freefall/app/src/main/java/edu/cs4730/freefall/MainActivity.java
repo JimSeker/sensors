@@ -13,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.TextView;
 
+import edu.cs4730.freefall.databinding.ActivityMainBinding;
+
 /**
  * This an example for a statement in class, where I said, "you can make a phone scream when it is falling"
  * <p>
@@ -31,22 +33,18 @@ import android.widget.TextView;
  */
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
-
     private SensorManager mSensorManager;
     private Sensor mSensor;
     Boolean Falling = false;
     MediaPlayer mediaPlayer;
-
-    TextView ev0, freefall;
+    ActivityMainBinding binding;
     String TAG = "freefall";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        ev0 = findViewById(R.id.tv_ev0);
-        freefall = findViewById(R.id.fall);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -78,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         //3.0 m/s or less is basically falling.
         //20 m/s is landing ish, based on what I read.
 
-        ev0.setText(String.valueOf(vector));
+        binding.tvEv0.setText(String.valueOf(vector));
         if (vector <= 3.0) { // 3 m/s should be falling, I think...
             Falling = true;
             playsnd();
@@ -86,9 +84,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             Falling = false;
         }
         if (Falling) {
-            freefall.setText("Falling!");
+            binding.fall.setText("Falling!");
         } else {
-            freefall.setText("not");
+            binding.fall.setText("not");
         }
     }
 
@@ -110,8 +108,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
 
     void KillMediaPlayer() {
-        if (mediaPlayer != null)
-            mediaPlayer.release();
+        if (mediaPlayer != null) mediaPlayer.release();
     }
 
     public void logthis(String text) {
