@@ -1,5 +1,6 @@
 package edu.cs4730.pitchroll_tk
 
+import android.annotation.SuppressLint
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -7,33 +8,24 @@ import android.hardware.SensorManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.TextView
+import edu.cs4730.pitchroll_tk.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
+    lateinit var binding: ActivityMainBinding
     private var myManager: SensorManager? = null
     private var accSensor: Sensor? = null
     private var sensors: List<Sensor>? = null
     var mySensorListener: SensorEventListener? = null
-    lateinit var cx: TextView
-    lateinit var cy: TextView
-    lateinit var cz: TextView
-    lateinit var sx: TextView
-    lateinit var sy: TextView
-    lateinit var sz: TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater);
+        setContentView(binding.root);
 
-        cx = findViewById(R.id.txtcx)
-        cy = findViewById(R.id.txtcy)
-        cz = findViewById(R.id.txtcz)
-        sx = findViewById(R.id.txtsx)
-        sy = findViewById(R.id.txtsy)
-        sz = findViewById(R.id.txtsz)
         findViewById<View>(R.id.Button01).setOnClickListener {
-            sx.text = cx.text
-            sy.text = cy.text
-            sz.text = cz.text
+            binding.txtsx.text = binding.txtcx.text
+            binding.txtsy.text = binding.txtcy.text
+            binding.txtsz.text = binding.txtcz.text
         }
         registerAccelerometer()
     }
@@ -61,14 +53,14 @@ class MainActivity : AppCompatActivity() {
             override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {
                 // I have no desire to deal with the accuracy events
             }
-
+            
             override fun onSensorChanged(event: SensorEvent) {
                 if (event.sensor.type == Sensor.TYPE_ORIENTATION) {
-                    cz.text =
+                    binding.txtcz.text =
                         "cz: " + event.values[0].toString() //azimuth, on z axis between -180 and 180
-                    cy.text =
+                    binding.txtcy.text =
                         "cy: " + event.values[1].toString() //pitch rotation, on y axis between -180 and 180
-                    cx.text =
+                    binding.txtcx.text =
                         "cx: " + event.values[2].toString() //roll rotation on the x axis  between -180 and 180
                 }
             }

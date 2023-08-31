@@ -13,6 +13,10 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import java.util.Locale;
+
+import edu.cs4730.pitchroll3.databinding.ActivityMainBinding;
+
 
 /**
  * http://stackoverflow.com/questions/9454948/android-pitch-and-roll-issue
@@ -26,7 +30,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private Sensor accel;
     private Sensor compass;
 
-    private TextView preferred;
+    private ActivityMainBinding binding;
     private boolean ready = false;
     private float[] accelValues = new float[3];
     private float[] compassValues = new float[3];
@@ -43,14 +47,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        preferred = findViewById(R.id.preferred);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         mgr = (SensorManager) this.getSystemService(SENSOR_SERVICE);
         accel = mgr.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         compass = mgr.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
         WindowManager window = (WindowManager)
-            this.getSystemService(WINDOW_SERVICE);
+                this.getSystemService(WINDOW_SERVICE);
         mRotation = window.getDefaultDisplay().getRotation();
     }
 
@@ -94,26 +98,26 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         }
 
         if (!ready) {
-            preferred.setText("Not enough data yet.");
+            binding.preferred.setText("Not enough data yet.");
             return;
         }
         if (SensorManager.getRotationMatrix(
-            inR, inclineMatrix, accelValues, compassValues)) {
+                inR, inclineMatrix, accelValues, compassValues)) {
             // got a good rotation matrix
             SensorManager.getOrientation(inR, prefValues);
             mInclination = SensorManager.getInclination(inclineMatrix);
             // Display every 10th value
             //if(counter++ % 10 == 0) {
-            doUpdate(null);
+            doUpdate();
 //				counter = 1;
             //}
 
         }
     }
 
-    public void doUpdate(View view) {
+    public void doUpdate() {
         if (!ready) {
-            preferred.setText("Not enough data yet2.");
+            binding.preferred.setText("Not enough data yet2.");
             return;
         }
         // Log.wtf(TAG, "doUpdate.");
@@ -123,12 +127,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         }
         //mPitch = 180.0  + Math.toDegrees(prefValues[1]); //so it goes from 0 to 360, instead of -180 to 180
         mPitch = Math.toDegrees(prefValues[1]);
-        String msg = String.format(
-            "Preferred:\nazimuth (Z): %7.3f \npitch (X): %7.3f\nroll (Y): %7.3f",
-            mAzimuth, //heading
-            mPitch,
-            Math.toDegrees(prefValues[2]));
-        preferred.setText(msg);
+        String msg = String.format(Locale.getDefault(),
+                "Preferred:\nazimuth (Z): %7.3f \npitch (X): %7.3f\nroll (Y): %7.3f",
+                mAzimuth, //heading
+                mPitch,
+                Math.toDegrees(prefValues[2]));
+        binding.preferred.setText(msg);
     }
 
 }

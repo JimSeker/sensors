@@ -4,11 +4,12 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
-import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import edu.cs4730.pitchroll3_tk.databinding.ActivityMainBinding
+import java.util.Locale
 
 class MainActivity : AppCompatActivity(), SensorEventListener {
 
@@ -17,7 +18,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     private var accel: Sensor? = null
     private var compass: Sensor? = null
 
-    private lateinit var preferred: TextView
+    private lateinit var binding: ActivityMainBinding
     private var ready = false
     private val accelValues = FloatArray(3)
     private val compassValues = FloatArray(3)
@@ -33,8 +34,9 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        preferred = findViewById(R.id.preferred)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
 
         mgr = this.getSystemService(SENSOR_SERVICE) as SensorManager
         accel = mgr.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
@@ -73,6 +75,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
                 }
                 if (compassValues[0] != 0F) ready = true
             }
+
             Sensor.TYPE_MAGNETIC_FIELD -> {
                 var i = 0
                 while (i < 3) {
@@ -83,7 +86,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
             }
         }
         if (!ready) {
-            preferred.text = "Not enough data yet."
+            binding.preferred.text = "Not enough data yet."
             return
         }
         if (SensorManager.getRotationMatrix(
@@ -95,15 +98,15 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
             mInclination = SensorManager.getInclination(inclineMatrix).toDouble()
             // Display every 10th value
             //if(counter++ % 10 == 0) {
-            doUpdate(null)
+            doUpdate()
             //				counter = 1;
             //}
         }
     }
 
-    fun doUpdate(view: View?) {
+    fun doUpdate() {
         if (!ready) {
-            preferred.text = "Not enough data yet2."
+            binding.preferred.text = "Not enough data yet2."
             return
         }
         // Log.wtf(TAG, "doUpdate.");
@@ -114,12 +117,13 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         //mPitch = 180.0  + Math.toDegrees(prefValues[1]); //so it goes from 0 to 360, instead of -180 to 180
         mPitch = Math.toDegrees(prefValues[1].toDouble())
         val msg = String.format(
+            Locale.getDefault(),
             "Preferred:\nazimuth (Z): %7.3f \npitch (X): %7.3f\nroll (Y): %7.3f",
             mAzimuth,  //heading
             mPitch,
             Math.toDegrees(prefValues[2].toDouble())
         )
-        preferred.text = msg
+        binding.preferred.text = msg
     }
 
 

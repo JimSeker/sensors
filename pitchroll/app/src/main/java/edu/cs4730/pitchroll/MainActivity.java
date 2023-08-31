@@ -11,19 +11,20 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.TextView;
+
+import edu.cs4730.pitchroll.databinding.ActivityMainBinding;
 
 /**
  * This example is using the deprecated API for the Orientation sensor.
  */
 
 public class MainActivity extends AppCompatActivity {
-
+    ActivityMainBinding binding;
     private SensorManager myManager;
     private Sensor accSensor;
     private List<Sensor> sensors;
     SensorEventListener mySensorListener;
-    TextView cx, cy, cz, sx, sy, sz;
+
 
     /**
      * Called when the activity is first created.
@@ -31,20 +32,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        cx =  findViewById(R.id.txtcx);
-        cy =  findViewById(R.id.txtcy);
-        cz = findViewById(R.id.txtcz);
-        sx = findViewById(R.id.txtsx);
-        sy =  findViewById(R.id.txtsy);
-        sz =  findViewById(R.id.txtsz);
         findViewById(R.id.Button01).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                sx.setText(cx.getText());
-                sy.setText(cy.getText());
-                sz.setText(cz.getText());
+                binding.txtsx.setText(binding.txtcx.getText());
+                binding.txtsy.setText(binding.txtcy.getText());
+                binding.txtsz.setText(binding.txtcz.getText());
             }
         });
         registerAccelerometer();
@@ -85,9 +81,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onSensorChanged(SensorEvent event) {
                 if (event.sensor.getType() == Sensor.TYPE_ORIENTATION) {
-                    cz.setText("cz: " + String.valueOf(event.values[0]));  //azimuth, on z axis between -180 and 180
-                    cy.setText("cy: " + String.valueOf(event.values[1]));  //pitch rotation, on y axis between -180 and 180
-                    cx.setText("cx: " + String.valueOf(event.values[2]));  //roll rotation on the x axis  between -180 and 180
+                    binding.txtcz.setText("cz: " + String.valueOf(event.values[0]));  //azimuth, on z axis between -180 and 180
+                    binding.txtcy.setText("cy: " + String.valueOf(event.values[1]));  //pitch rotation, on y axis between -180 and 180
+                    binding.txtcx.setText("cx: " + String.valueOf(event.values[2]));  //roll rotation on the x axis  between -180 and 180
                 }
             }
         };

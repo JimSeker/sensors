@@ -8,8 +8,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
+import edu.cs4730.pitchroll2_tk.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity(), SensorEventListener {
+    lateinit var binding: ActivityMainBinding
+
     /* sensor data */
     lateinit var m_sensorManager: SensorManager
     var m_lastMagFields: FloatArray? = null
@@ -39,7 +42,9 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     private val m_tiltCentreZ = 0f
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater);
+        setContentView(binding.root);
+
         m_sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
         registerListeners()
     }
@@ -135,16 +140,12 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 
     private fun computeOrientation() {
         if (SensorManager.getRotationMatrix(
-                m_rotationMatrix,
-                null,
-                m_lastAccels,
-                m_lastMagFields
+                m_rotationMatrix, null, m_lastAccels, m_lastMagFields
             )
         ) {
             SensorManager.getOrientation(m_rotationMatrix, m_orientation)
 
-            /* 1 radian = 57.2957795 degrees */
-            /* [0] : yaw, rotation around z axis
+            /* 1 radian = 57.2957795 degrees *//* [0] : yaw, rotation around z axis
              * [1] : pitch, rotation around x axis
              * [2] : roll, rotation around y axis */
             val yaw = m_orientation[0] * 57.2957795f
@@ -153,12 +154,9 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
             m_lastYaw = m_filters[0].append(yaw)
             m_lastPitch = m_filters[1].append(pitch)
             m_lastRoll = m_filters[2].append(roll)
-            val rt = findViewById<View>(R.id.roll) as TextView
-            val pt = findViewById<View>(R.id.pitch) as TextView
-            val yt = findViewById<View>(R.id.yaw) as TextView
-            yt.text = "azi z: $m_lastYaw"
-            pt.text = "pitch x: $m_lastPitch"
-            rt.text = "roll y: $m_lastRoll"
+            binding.yaw.text = "azi z: $m_lastYaw"
+            binding.pitch.text = "pitch x: $m_lastPitch"
+            binding.roll.text = "roll y: $m_lastRoll"
         }
     }
 

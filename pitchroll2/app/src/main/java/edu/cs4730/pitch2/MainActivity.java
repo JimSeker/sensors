@@ -7,10 +7,11 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
-import android.util.Log;
-import android.widget.TextView;
+
+import edu.cs4730.pitch2.databinding.MainBinding;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
+    MainBinding binding;
     /* sensor data */
     SensorManager m_sensorManager;
     float []m_lastMagFields;
@@ -41,7 +42,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+        binding = MainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
         m_sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         registerListeners();
     }
@@ -149,12 +152,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             m_lastYaw = m_filters[0].append(yaw);
             m_lastPitch = m_filters[1].append(pitch);
             m_lastRoll = m_filters[2].append(roll);
-            TextView rt = (TextView) findViewById(R.id.roll);
-            TextView pt = (TextView) findViewById(R.id.pitch);
-            TextView yt = (TextView) findViewById(R.id.yaw);
-            yt.setText("azi z: " + m_lastYaw);
-            pt.setText("pitch x: " + m_lastPitch);
-            rt.setText("roll y: " + m_lastRoll);
+            binding.yaw.setText("azi z: " + m_lastYaw);
+            binding.pitch.setText("pitch x: " + m_lastPitch);
+            binding.roll.setText("roll y: " + m_lastRoll);
         }
     }
 
