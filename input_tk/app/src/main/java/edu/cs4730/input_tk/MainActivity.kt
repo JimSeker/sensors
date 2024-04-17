@@ -17,6 +17,7 @@ import android.view.View.OnTouchListener
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import edu.cs4730.input_tk.databinding.ActivityMainBinding
+import kotlin.math.abs
 
 /**
  * An example of how to access the touch, tap, double, and Gestures on the screen.
@@ -140,23 +141,19 @@ class MainActivity : AppCompatActivity() {
         private val SWIPE_THRESHOLD_VELOCITY = 75 //100
 
         override fun onFling(
-            e1: MotionEvent, e2: MotionEvent, velocityX: Float, velocityY: Float
+            e1: MotionEvent?, e2: MotionEvent, velocityX: Float, velocityY: Float
         ): Boolean {
-            val dX = e2.x - e1.x
+            val dX = e2.x - e1!!.x
             val dY = e1.y - e2.y
-            if (Math.abs(dY) < SWIPE_MAX_OFF_PATH && Math.abs(velocityX) >= SWIPE_THRESHOLD_VELOCITY && Math.abs(
-                    dX
-                ) >= SWIPE_MIN_DISTANCE
-            ) {
+            if (abs(dY) < SWIPE_MAX_OFF_PATH && abs(velocityX) >= SWIPE_THRESHOLD_VELOCITY && abs(dX) >= SWIPE_MIN_DISTANCE) {
                 if (dX > 0) {
                     Toast.makeText(applicationContext, "Right Swipe", Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(applicationContext, "Left Swipe", Toast.LENGTH_SHORT).show()
                 }
                 return true
-            } else if (Math.abs(dX) < SWIPE_MAX_OFF_PATH && Math.abs(velocityY) >= SWIPE_THRESHOLD_VELOCITY && Math.abs(
-                    dY
-                ) >= SWIPE_MIN_DISTANCE
+            } else if (abs(dX) < SWIPE_MAX_OFF_PATH && abs(velocityY) >= SWIPE_THRESHOLD_VELOCITY
+                && abs(dY) >= SWIPE_MIN_DISTANCE
             ) {
                 if (dY > 0) {
                     Toast.makeText(applicationContext, "Up Swipe", Toast.LENGTH_SHORT).show()
@@ -170,12 +167,13 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    @Suppress("DEPRECATION")
     private fun registerAccelerometer() {
         myManager = getSystemService(SENSOR_SERVICE) as SensorManager
         //        sensors = myManager.getSensorList(Sensor.TYPE_ACCELEROMETER);
 //        if(sensors.size() > 0)
 //          accSensor = sensors.get(0);
-        accSensor = myManager!!.getDefaultSensor(Sensor.TYPE_ORIENTATION)
+        accSensor = myManager!!.getDefaultSensor(Sensor.TYPE_ORIENTATION)!!
         mySensorListener = object : SensorEventListener {
             override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {
                 // I have no desire to deal with the accuracy events
@@ -199,7 +197,7 @@ class MainActivity : AppCompatActivity() {
         				 *      +y is top is lifted and -y is bottom is lifted.
         				 *      But we need to reverse, because with want it goes "down", instead of lifted.
         				 */
-                        if (Math.abs(sx) >= Math.abs(sy)) {  //sx value is the one to take
+                        if (abs(sx) >= abs(sy)) {  //sx value is the one to take
                             if (sx > 0) //go right lifted, so go left
                                 binding.label4.text = "Sensor: x:$sx y:$sy  Rightside up"
                             else binding.label4.text = "Sensor: x:$sx y:$sy  leftside up"
@@ -215,7 +213,7 @@ class MainActivity : AppCompatActivity() {
         myManager!!.registerListener(mySensorListener, accSensor, SensorManager.SENSOR_DELAY_GAME)
     }
 
-    fun unregisterAccelerometer() {
+    private fun unregisterAccelerometer() {
         if (myManager != null && mySensorListener != null) {
             myManager!!.unregisterListener(mySensorListener)
         }

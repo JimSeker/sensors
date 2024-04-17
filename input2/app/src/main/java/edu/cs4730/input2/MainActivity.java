@@ -2,9 +2,9 @@ package edu.cs4730.input2;
 
 import android.os.Bundle;
 
-import androidx.core.view.GestureDetectorCompat;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
 import android.util.Log;
 import android.view.GestureDetector.OnDoubleTapListener;
@@ -34,7 +34,7 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity implements OnGestureListener, OnDoubleTapListener {
 
     private static final String TAG = "Gestures";
-    private GestureDetectorCompat mDetector;
+    private GestureDetector mDetector;
     char[] chars = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
         '1', '2', '3', '4', '5', '6', '7', '8', '9', '0'};
 
@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements OnGestureListener
         // Instantiate the gesture detector with the
         // application context and an implementation of
         // GestureDetector.OnGestureListener
-        mDetector = new GestureDetectorCompat(this, this);
+        mDetector = new GestureDetector(this, this);
         // Also Set the gesture detector as the double tap
         // listener.  See the overrides below for which events comes from which.
         mDetector.setOnDoubleTapListener(this);

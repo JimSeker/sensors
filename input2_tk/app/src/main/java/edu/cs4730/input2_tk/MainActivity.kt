@@ -3,13 +3,12 @@ package edu.cs4730.input2_tk
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.GestureDetector
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.widget.Toast
 import android.view.GestureDetector.OnGestureListener
 import android.view.GestureDetector.OnDoubleTapListener
-
-import androidx.core.view.GestureDetectorCompat
 
 /**
  * This is example is copied from the input2 java version.
@@ -28,7 +27,7 @@ import androidx.core.view.GestureDetectorCompat
 class MainActivity : AppCompatActivity(), OnGestureListener, OnDoubleTapListener {
 
     val TAG = "Gestures"
-    var mDetector: GestureDetectorCompat? = null
+    lateinit var mDetector: GestureDetector
     val chars = charArrayOf(
         'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n',
         'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '1', '2', '3', '4', '5', '6',
@@ -40,9 +39,9 @@ class MainActivity : AppCompatActivity(), OnGestureListener, OnDoubleTapListener
         setContentView(R.layout.activity_main)
 
         // Instantiate the gesture detector with the application context and an implementation of GestureDetector.OnGestureListener
-        mDetector = GestureDetectorCompat(this, this)
+        mDetector = GestureDetector(this, this)
         // Also Set the gesture detector as the double tap  listener.  See the overrides below for which events comes from which.
-        mDetector!!.setOnDoubleTapListener(this)
+        mDetector.setOnDoubleTapListener(this)
     }
 
     /**
@@ -65,6 +64,7 @@ class MainActivity : AppCompatActivity(), OnGestureListener, OnDoubleTapListener
      */
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
+        super.onBackPressed()
         // do something on back.
         Log.d(TAG, "onBackPressed: it was pushed.")
         Toast.makeText(applicationContext, "onBackPressed: it was pushed.", Toast.LENGTH_SHORT)
@@ -76,7 +76,7 @@ class MainActivity : AppCompatActivity(), OnGestureListener, OnDoubleTapListener
      * touch event that comes from he activity.
      */
     override fun onTouchEvent(event: MotionEvent): Boolean {
-        mDetector!!.onTouchEvent(event)
+        mDetector.onTouchEvent(event)
         //log it, but no toast here.
         Log.d(TAG, "onTouchEvent: $event")
         // Be sure to call the superclass implementation, since we are not handling anything here.
@@ -96,7 +96,7 @@ class MainActivity : AppCompatActivity(), OnGestureListener, OnDoubleTapListener
      * overridden from the OnGuestureListener.
      */
     override fun onFling(
-        event1: MotionEvent, event2: MotionEvent,
+        event1: MotionEvent?, event2: MotionEvent,
         velocityX: Float, velocityY: Float
     ): Boolean {
         val msg = "onFling: $event1$event2"
@@ -117,7 +117,7 @@ class MainActivity : AppCompatActivity(), OnGestureListener, OnDoubleTapListener
      * overridden from the OnGuestureListener.
      */
     override fun onScroll(
-        e1: MotionEvent, e2: MotionEvent, distanceX: Float,
+        e1: MotionEvent?, e2: MotionEvent, distanceX: Float,
         distanceY: Float
     ): Boolean {
         val msg = "onScroll: $e1$e2"

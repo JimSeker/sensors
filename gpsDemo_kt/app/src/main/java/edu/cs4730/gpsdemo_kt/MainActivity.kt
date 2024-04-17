@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     var myL: LocationManager? = null
     private lateinit var REQUIRED_PERMISSIONS: Array<String>
-    private var rpl: ActivityResultLauncher<Array<String>>? = null
+    private lateinit var rpl: ActivityResultLauncher<Array<String>>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -90,7 +90,7 @@ class MainActivity : AppCompatActivity() {
                 this, Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            rpl!!.launch(REQUIRED_PERMISSIONS)
+            rpl.launch(REQUIRED_PERMISSIONS)
         } else {
             logthis("GPS/Fine I have permissions")
             myL!!.requestLocationUpdates(
