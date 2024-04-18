@@ -8,11 +8,6 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.util.Log;
-import android.view.View;
-import android.view.WindowManager;
-import android.widget.TextView;
-
 import java.util.Locale;
 
 import edu.cs4730.pitchroll3.databinding.ActivityMainBinding;
@@ -53,9 +48,17 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         mgr = (SensorManager) this.getSystemService(SENSOR_SERVICE);
         accel = mgr.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         compass = mgr.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
-        WindowManager window = (WindowManager)
-                this.getSystemService(WINDOW_SERVICE);
-        mRotation = window.getDefaultDisplay().getRotation();
+
+        mRotation = rotationInfo();
+    }
+
+    public int rotationInfo() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+            return getDisplay().getRotation();
+        } else {
+
+            return getWindowManager().getDefaultDisplay().getRotation();
+        }
     }
 
     @Override
@@ -102,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             return;
         }
         if (SensorManager.getRotationMatrix(
-                inR, inclineMatrix, accelValues, compassValues)) {
+            inR, inclineMatrix, accelValues, compassValues)) {
             // got a good rotation matrix
             SensorManager.getOrientation(inR, prefValues);
             mInclination = SensorManager.getInclination(inclineMatrix);
@@ -128,10 +131,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         //mPitch = 180.0  + Math.toDegrees(prefValues[1]); //so it goes from 0 to 360, instead of -180 to 180
         mPitch = Math.toDegrees(prefValues[1]);
         String msg = String.format(Locale.getDefault(),
-                "Preferred:\nazimuth (Z): %7.3f \npitch (X): %7.3f\nroll (Y): %7.3f",
-                mAzimuth, //heading
-                mPitch,
-                Math.toDegrees(prefValues[2]));
+            "Preferred:\nazimuth (Z): %7.3f \npitch (X): %7.3f\nroll (Y): %7.3f",
+            mAzimuth, //heading
+            mPitch,
+            Math.toDegrees(prefValues[2]));
         binding.preferred.setText(msg);
     }
 

@@ -16,9 +16,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     SensorManager m_sensorManager;
     float []m_lastMagFields;
     float []m_lastAccels;
-    private float[] m_rotationMatrix = new float[16];
-    private float[] m_remappedR = new float[16];
-    private float[] m_orientation = new float[4];
+    private final float[] m_rotationMatrix = new float[16];
+    private final float[] m_remappedR = new float[16];
+    private final float[] m_orientation = new float[4];
 
     /* fix random noise by averaging tilt values */
     final static int AVERAGE_BUFFER = 30;

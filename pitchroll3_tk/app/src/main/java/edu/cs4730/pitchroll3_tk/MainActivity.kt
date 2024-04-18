@@ -4,6 +4,7 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
@@ -37,12 +38,19 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
         mgr = this.getSystemService(SENSOR_SERVICE) as SensorManager
         accel = mgr.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
         compass = mgr.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD)
-        val window = this.getSystemService(WINDOW_SERVICE) as WindowManager
-        mRotation = window.defaultDisplay.rotation
+        mRotation = rotationInfo()
+    }
+
+    private fun rotationInfo(): Int {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            display!!.rotation
+        } else {
+            @Suppress("DEPRECATION")
+            windowManager.defaultDisplay.rotation
+        }
     }
 
     override fun onResume() {

@@ -1,6 +1,5 @@
 package edu.cs4730.pitchroll_tk
 
-import android.annotation.SuppressLint
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -45,7 +44,8 @@ class MainActivity : AppCompatActivity() {
         unregisterAccelerometer()
     }
 
-    fun registerAccelerometer() {
+    @Suppress("DEPRECATION")
+    private fun registerAccelerometer() {
         myManager = getSystemService(SENSOR_SERVICE) as SensorManager
         sensors = myManager!!.getSensorList(Sensor.TYPE_ORIENTATION)
         if (sensors!!.isNotEmpty()) accSensor = sensors!![0]
@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity() {
             override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {
                 // I have no desire to deal with the accuracy events
             }
-            
+
             override fun onSensorChanged(event: SensorEvent) {
                 if (event.sensor.type == Sensor.TYPE_ORIENTATION) {
                     binding.txtcz.text =
@@ -68,7 +68,7 @@ class MainActivity : AppCompatActivity() {
         myManager!!.registerListener(mySensorListener, accSensor, SensorManager.SENSOR_DELAY_GAME)
     }
 
-    fun unregisterAccelerometer() {
+    private fun unregisterAccelerometer() {
         if (myManager != null && mySensorListener != null) {
             myManager!!.unregisterListener(mySensorListener)
         }
