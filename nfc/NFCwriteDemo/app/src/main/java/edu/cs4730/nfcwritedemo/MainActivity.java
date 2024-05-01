@@ -27,8 +27,10 @@ import java.io.IOException;
  * <p>
  * This take data provided by the user in edittext box and will wrote to a device/tag (works best with a nfc tag).
  *
- *  About half of this example is deeprecated in api 29.  Googles doc's says stupid things like use bluetooth instead.
+ *  About half of this example is deprecated in api 29.  Googles doc's says stupid things like use bluetooth instead.
  *  https://developer.android.com/reference/android/nfc/NfcAdapter.CreateNdefMessageCallback#createNdefMessage(android.nfc.NfcEvent)
+ *
+ *  this example will not work compiled in api 34 as the depreciated is now removed.
  */
 
 
@@ -111,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
         notPaused = false;
         //turn off the reading of tags.  we are only writing to them.
-        mNfcAdapter.disableForegroundNdefPush(this); //deprecated
+        mNfcAdapter.disableForegroundNdefPush(this); //deprecated, remove in api 34
 
     }
 
@@ -120,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void disableNdefExchangeMode() {
         //This turns off read of nfc devices/tags.  We are only writing to tags in this example.
-        mNfcAdapter.disableForegroundNdefPush(this);  //deprecated.
+        mNfcAdapter.disableForegroundNdefPush(this);  //deprecated, remove in api 34
         mNfcAdapter.setNdefPushMessage(null, MainActivity.this);  //turn it off.
         mNfcAdapter.disableForegroundDispatch(this);
     }

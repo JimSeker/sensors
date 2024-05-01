@@ -29,6 +29,8 @@ import java.io.IOException;
  * <p>
  * Also about half of this example is @Deprecated in 29.  removing the enable and disable stops
  * this example from working in the foreground.  It will read in the background without them.
+ *
+ * this example is broken in api 34 as one main function is now removed.
  * <p>
  * Googles doc's says stupid things like use bluetooth instead.
  * https://developer.android.com/reference/android/nfc/NfcAdapter.CreateNdefMessageCallback#createNdefMessage(android.nfc.NfcEvent)
@@ -241,7 +243,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void disableNdefExchangeMode() {
         //This turns off read of nfc devices/tags.  We are only writing to tags in this example.
-        mNfcAdapter.disableForegroundNdefPush(this);  //deprecated.
+        mNfcAdapter.disableForegroundNdefPush(this);  //deprecated, removed in api 34.
         mNfcAdapter.setNdefPushMessage(null, MainActivity.this);  //turn it off.
         mNfcAdapter.disableForegroundDispatch(this);
     }
