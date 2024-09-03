@@ -145,6 +145,7 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
 
+
     }
 
     class MyGestureDetector extends GestureDetector.SimpleOnGestureListener {
@@ -156,6 +157,7 @@ public class MainActivity extends AppCompatActivity {
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
             float dX = e2.getX() - e1.getX();
             float dY = e1.getY() - e2.getY();
+
             if (Math.abs(dY) < SWIPE_MAX_OFF_PATH &&
                 Math.abs(velocityX) >= SWIPE_THRESHOLD_VELOCITY &&
                 Math.abs(dX) >= SWIPE_MIN_DISTANCE) {

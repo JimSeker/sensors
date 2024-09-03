@@ -2,6 +2,7 @@ package edu.cs4730.input2;
 
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.GestureDetector;
@@ -49,6 +50,20 @@ public class MainActivity extends AppCompatActivity implements OnGestureListener
         // Also Set the gesture detector as the double tap
         // listener.  See the overrides below for which events comes from which.
         mDetector.setOnDoubleTapListener(this);
+
+
+//      This is really not recommended by well anyone.  You are change the default function of the device.
+//      users really hate when you do that.  the override for onBackPressed() is deprecated.
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                Log.d(TAG, "onBackPressed: it was pushed.");
+                Toast.makeText(getApplicationContext(), "onBackPressed: it was pushed.", Toast.LENGTH_SHORT).show();
+                finish();  //we have to manually end the program, since we captured the backup button.
+            }
+        });
+
+
     }
 
     @Override
@@ -72,20 +87,6 @@ public class MainActivity extends AppCompatActivity implements OnGestureListener
         }
         //allow the system to deal with the events we do not, like all the rest of the buttons.
         return super.onKeyDown(keyCode, event);
-    }
-
-    /**
-     * This is really not recommended by well anyone.  You are change the default function of the device.
-     * users really hate when you do that.
-     */
-    @Override
-    public void onBackPressed() {
-        // do something on back.
-        Log.d(TAG, "onBackPressed: it was pushed.");
-        Toast.makeText(getApplicationContext(), "onBackPressed: it was pushed.", Toast.LENGTH_SHORT).show();
-
-        finish();  //we have to manually end the program, since we captured the backup button.
-
     }
 
     /**

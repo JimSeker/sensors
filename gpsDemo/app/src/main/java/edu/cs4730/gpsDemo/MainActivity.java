@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
     private String[] REQUIRED_PERMISSIONS;
     ActivityResultLauncher<String[]> rpl;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,14 +112,14 @@ public class MainActivity extends AppCompatActivity {
                         //are shown if you may need them.
                         if (location != null) {
                             logthis("Fine onLocationChanged called");
-                    /*	        location.getAltitude();
-					        location.getLatitude();
-	    			        location.getLongitude();
-	    			        location.getTime();
-	    			        location.getAccuracy();
-	    			        location.getSpeed();
-	    			        location.getProvider();
-					 */
+//                          location.getAltitude();
+//					        location.getLatitude();
+//	    			        location.getLongitude();
+//	    			        location.getTime();
+//	    			        location.getAccuracy();
+//	    			        location.getSpeed();
+//	    			        location.getProvider();
+
                             logthis(location.getLatitude() + " " + location.getLongitude());
 
                         }
@@ -136,10 +135,6 @@ public class MainActivity extends AppCompatActivity {
                         logthis("Find Provider is enabled");
                     }
 
-                    @Override
-                    public void onStatusChanged(String provider, int status, Bundle extras) {
-                        logthis("Fine Provider status changed");
-                    }
                 });
 
             //Get a list of providers
@@ -191,11 +186,6 @@ public class MainActivity extends AppCompatActivity {
                     public void onProviderEnabled(String provider) {
                         logthis("Coarse Provider is enabled");
 
-                    }
-
-                    @Override
-                    public void onStatusChanged(String provider, int status, Bundle extras) {
-                        logthis("Coarse Provider status changed");
                     }
                 });
 

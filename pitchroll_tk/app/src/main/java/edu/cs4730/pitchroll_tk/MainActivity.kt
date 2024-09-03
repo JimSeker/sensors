@@ -1,5 +1,6 @@
 package edu.cs4730.pitchroll_tk
 
+import android.annotation.SuppressLint
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -21,7 +22,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater);
         setContentView(binding.root);
 
-        findViewById<View>(R.id.Button01).setOnClickListener {
+        binding.Button01.setOnClickListener {
             binding.txtsx.text = binding.txtcx.text
             binding.txtsy.text = binding.txtcy.text
             binding.txtsz.text = binding.txtcz.text
@@ -54,6 +55,7 @@ class MainActivity : AppCompatActivity() {
                 // I have no desire to deal with the accuracy events
             }
 
+            @SuppressLint("SetTextI18n")
             override fun onSensorChanged(event: SensorEvent) {
                 if (event.sensor.type == Sensor.TYPE_ORIENTATION) {
                     binding.txtcz.text =

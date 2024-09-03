@@ -1,8 +1,6 @@
 package edu.cs4730.gpsdemo_kt
 
-
 import android.Manifest
-import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationListener
@@ -20,7 +18,6 @@ import edu.cs4730.gpsdemo_kt.databinding.ActivityMainBinding
 /**
  * this is a demo to show how to get location (ie gps) information from the device.
  * shows a listener changes and then just get the current (last known) information at the bottom.
- *
  *
  * if using the emulator, set the location in the emulator before running this code, otherwise
  * you may get errors or just really odd results.
@@ -101,7 +98,7 @@ class MainActivity : AppCompatActivity() {
                     override fun onLocationChanged(location: Location) {
                         //if we have location information, update the screen here.  just lat and lot, others
                         //are shown if you may need them.
-                        if (location != null) {
+                        if (location != null) {  //in java this can and is null, kotlin asserts it's not.  odd.
                             logthis("Fine onLocationChanged called")
 //                            location.altitude;
 //                            location.latitude;
@@ -122,9 +119,6 @@ class MainActivity : AppCompatActivity() {
                         logthis("Find Provider is enabled")
                     }
 
-                    override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {
-                        logthis("Fine Provider status changed")
-                    }
                 })
 
             //Get a list of providers
@@ -157,7 +151,7 @@ class MainActivity : AppCompatActivity() {
                 this, Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            rpl!!.launch(REQUIRED_PERMISSIONS)
+            rpl.launch(REQUIRED_PERMISSIONS)
         } else {
             logthis("Coarse I have permissions")
             myL!!.requestLocationUpdates(
@@ -182,9 +176,6 @@ class MainActivity : AppCompatActivity() {
                         logthis("Coarse Provider is enabled")
                     }
 
-                    override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {
-                        logthis("Coarse Provider status changed")
-                    }
                 })
 
             //Get a list of providers

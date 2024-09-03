@@ -2,6 +2,7 @@ package edu.cs4730.pitchroll;
 
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -35,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        findViewById(R.id.Button01).setOnClickListener(new OnClickListener() {
+       binding.Button01.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 binding.txtsx.setText(binding.txtcx.getText());
@@ -68,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
     void registerAccelerometer() {
         myManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         sensors = myManager.getSensorList(Sensor.TYPE_ORIENTATION);
-        if (sensors.size() > 0)
+        if (!sensors.isEmpty())
             accSensor = sensors.get(0);
 
         mySensorListener = new SensorEventListener() {
@@ -77,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
                 // I have no desire to deal with the accuracy events
 
             }
-
+            @SuppressLint("SetTextI18n")
             @Override
             public void onSensorChanged(SensorEvent event) {
                 if (event.sensor.getType() == Sensor.TYPE_ORIENTATION) {

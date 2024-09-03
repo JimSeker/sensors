@@ -6,8 +6,6 @@ import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Build
 import android.os.Bundle
-import android.view.View
-import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import edu.cs4730.pitchroll3_tk.databinding.ActivityMainBinding
 import java.util.Locale
