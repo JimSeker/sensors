@@ -1,18 +1,18 @@
 package edu.cs4730.input2;
 
-import android.os.Bundle;
-
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.Bundle;
 import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
 import android.util.Log;
 import android.view.GestureDetector.OnDoubleTapListener;
 import android.view.KeyEvent;
-import android.view.Menu;
 import android.view.MotionEvent;
 import android.widget.Toast;
+
+import edu.cs4730.input2.databinding.ActivityMainBinding;
 
 
 /**
@@ -34,6 +34,8 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements OnGestureListener, OnDoubleTapListener {
 
+    ActivityMainBinding binding;
+
     private static final String TAG = "Gestures";
     private GestureDetector mDetector;
     char[] chars = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
@@ -42,7 +44,8 @@ public class MainActivity extends AppCompatActivity implements OnGestureListener
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         // Instantiate the gesture detector with the
         // application context and an implementation of
         // GestureDetector.OnGestureListener
@@ -66,13 +69,6 @@ public class MainActivity extends AppCompatActivity implements OnGestureListener
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
     /**
      * Keyevent that comes from the activity.
      */
@@ -81,8 +77,7 @@ public class MainActivity extends AppCompatActivity implements OnGestureListener
 
         char key = event.getMatch(chars);
         if (key != '\0') {
-            Log.d(TAG, "onKeyDown: " + key);
-            Toast.makeText(getApplicationContext(), "onKeyDown: " + key, Toast.LENGTH_SHORT).show();
+            logthis("onKeyDown: " + key);
             return true;
         }
         //allow the system to deal with the events we do not, like all the rest of the buttons.
@@ -106,8 +101,7 @@ public class MainActivity extends AppCompatActivity implements OnGestureListener
      */
     @Override
     public boolean onDown(MotionEvent event) {
-        Log.d(TAG, "onDown: " + event.toString());
-        Toast.makeText(getApplicationContext(), "onDown: " + event.toString(), Toast.LENGTH_SHORT).show();
+        logthis("onDown: " + event.toString());
         return true;
     }
 
@@ -118,8 +112,7 @@ public class MainActivity extends AppCompatActivity implements OnGestureListener
     public boolean onFling(MotionEvent event1, MotionEvent event2,
                            float velocityX, float velocityY) {
         String msg = "onFling: " + event1.toString() + event2.toString();
-        Log.d(TAG, msg);
-        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+        logthis(msg);
         return true;
     }
 
@@ -128,8 +121,8 @@ public class MainActivity extends AppCompatActivity implements OnGestureListener
      */
     @Override
     public void onLongPress(MotionEvent event) {
-        Toast.makeText(getApplicationContext(), "onLongPress: " + event.toString(), Toast.LENGTH_SHORT).show();
-        Log.d(TAG, "onLongPress: " + event.toString());
+
+        logthis("onLongPress: " + event.toString());
     }
 
     /**
@@ -139,8 +132,7 @@ public class MainActivity extends AppCompatActivity implements OnGestureListener
     public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
                             float distanceY) {
         String msg = "onScroll: " + e1.toString() + e2.toString();
-        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
-        Log.d(TAG, msg);
+        logthis(msg);
         return true;
     }
 
@@ -149,8 +141,7 @@ public class MainActivity extends AppCompatActivity implements OnGestureListener
      */
     @Override
     public void onShowPress(MotionEvent event) {
-        Toast.makeText(getApplicationContext(), "onShowPress: " + event.toString(), Toast.LENGTH_SHORT).show();
-        Log.d(TAG, "onShowPress: " + event.toString());
+        logthis("onShowPress: " + event.toString());
     }
 
     /**
@@ -158,8 +149,7 @@ public class MainActivity extends AppCompatActivity implements OnGestureListener
      */
     @Override
     public boolean onSingleTapUp(MotionEvent event) {
-        Toast.makeText(getApplicationContext(), "onSingleTapUp: " + event.toString(), Toast.LENGTH_SHORT).show();
-        Log.d(TAG, "onSingleTapUp: " + event.toString());
+        logthis("onSingleTapUp: " + event.toString());
         return true;
     }
 
@@ -168,8 +158,8 @@ public class MainActivity extends AppCompatActivity implements OnGestureListener
      */
     @Override
     public boolean onDoubleTap(MotionEvent event) {
-        Toast.makeText(getApplicationContext(), "onDoubleTap: " + event.toString(), Toast.LENGTH_SHORT).show();
-        Log.d(TAG, "onDoubleTap: " + event.toString());
+
+        logthis("onDoubleTap: " + event.toString());
         return true;
     }
 
@@ -178,8 +168,7 @@ public class MainActivity extends AppCompatActivity implements OnGestureListener
      */
     @Override
     public boolean onDoubleTapEvent(MotionEvent event) {
-        Toast.makeText(getApplicationContext(), "onDoubleTapEvent: " + event.toString(), Toast.LENGTH_SHORT).show();
-        Log.d(TAG, "onDoubleTapEvent: " + event.toString());
+        logthis("onDoubleTapEvent: " + event.toString());
         return true;
     }
 
@@ -188,10 +177,12 @@ public class MainActivity extends AppCompatActivity implements OnGestureListener
      */
     @Override
     public boolean onSingleTapConfirmed(MotionEvent event) {
-        Toast.makeText(getApplicationContext(), "onSingleTapConfirmed: " + event.toString(), Toast.LENGTH_SHORT).show();
-        Log.d(TAG, "onSingleTapConfirmed: " + event.toString());
+        logthis("onSingleTapConfirmed: " + event.toString());
         return true;
     }
 
-
+    void logthis(String item) {
+        Toast.makeText(getApplicationContext(),  item, Toast.LENGTH_SHORT).show();
+        Log.d(TAG,  item);
+    }
 }

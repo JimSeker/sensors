@@ -10,6 +10,7 @@ import android.view.MotionEvent
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import edu.cs4730.input2_tk.databinding.ActivityMainBinding
 
 /**
  * This is example is copied from the input2 java version.
@@ -27,13 +28,10 @@ import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity(), OnGestureListener, OnDoubleTapListener {
 
-
-    companion object {
-        const val TAG = "Gestures"
-    }
-
-    lateinit var mDetector: GestureDetector
-    val chars = charArrayOf(
+    private val TAG = "Gestures"
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var mDetector: GestureDetector
+    private val chars = charArrayOf(
         'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n',
         'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '1', '2', '3', '4', '5', '6',
         '7', '8', '9', '0'
@@ -41,7 +39,8 @@ class MainActivity : AppCompatActivity(), OnGestureListener, OnDoubleTapListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         // Instantiate the gesture detector with the application context and an implementation of GestureDetector.OnGestureListener
         mDetector = GestureDetector(this, this)
@@ -72,8 +71,7 @@ class MainActivity : AppCompatActivity(), OnGestureListener, OnDoubleTapListener
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
         val key = event.getMatch(chars)
         if (key != '\u0000') {
-            Log.d(TAG, "onKeyDown: $key")
-            Toast.makeText(applicationContext, "onKeyDown: $key", Toast.LENGTH_SHORT).show()
+            logthis("onKeyDown: $key")
             return true
         }
         //allow the system to deal with the events we do not, like all the rest of the buttons.
@@ -95,8 +93,7 @@ class MainActivity : AppCompatActivity(), OnGestureListener, OnDoubleTapListener
      * overridden from the OnGuestureListener.
      */
     override fun onDown(event: MotionEvent): Boolean {
-        Log.d(TAG, "onDown: $event")
-        Toast.makeText(applicationContext, "onDown: $event", Toast.LENGTH_SHORT).show()
+        logthis("onDown: $event")
         return true
     }
 
@@ -108,8 +105,7 @@ class MainActivity : AppCompatActivity(), OnGestureListener, OnDoubleTapListener
         velocityX: Float, velocityY: Float
     ): Boolean {
         val msg = "onFling: $event1$event2"
-        Log.d(TAG, msg)
-        Toast.makeText(applicationContext, msg, Toast.LENGTH_SHORT).show()
+        logthis(msg)
         return true
     }
 
@@ -117,8 +113,7 @@ class MainActivity : AppCompatActivity(), OnGestureListener, OnDoubleTapListener
      * overridden from the OnGuestureListener.
      */
     override fun onLongPress(event: MotionEvent) {
-        Toast.makeText(applicationContext, "onLongPress: $event", Toast.LENGTH_SHORT).show()
-        Log.d(TAG, "onLongPress: $event")
+        logthis("onLongPress: $event")
     }
 
     /**
@@ -129,8 +124,7 @@ class MainActivity : AppCompatActivity(), OnGestureListener, OnDoubleTapListener
         distanceY: Float
     ): Boolean {
         val msg = "onScroll: $e1$e2"
-        Toast.makeText(applicationContext, msg, Toast.LENGTH_SHORT).show()
-        Log.d(TAG, msg)
+        logthis(msg)
         return true
     }
 
@@ -138,16 +132,14 @@ class MainActivity : AppCompatActivity(), OnGestureListener, OnDoubleTapListener
      * overridden from the OnGuestureListener.
      */
     override fun onShowPress(event: MotionEvent) {
-        Toast.makeText(applicationContext, "onShowPress: $event", Toast.LENGTH_SHORT).show()
-        Log.d(TAG, "onShowPress: $event")
+        logthis("onShowPress: $event")
     }
 
     /**
      * overridden from the OnGuestureListener.
      */
     override fun onSingleTapUp(event: MotionEvent): Boolean {
-        Toast.makeText(applicationContext, "onSingleTapUp: $event", Toast.LENGTH_SHORT).show()
-        Log.d(TAG, "onSingleTapUp: $event")
+        logthis("onSingleTapUp: $event")
         return true
     }
 
@@ -155,8 +147,7 @@ class MainActivity : AppCompatActivity(), OnGestureListener, OnDoubleTapListener
      * overridden from the OnDoubleTapListener
      */
     override fun onDoubleTap(event: MotionEvent): Boolean {
-        Toast.makeText(applicationContext, "onDoubleTap: $event", Toast.LENGTH_SHORT).show()
-        Log.d(TAG, "onDoubleTap: $event")
+        logthis("onDoubleTap: $event")
         return true
     }
 
@@ -164,8 +155,7 @@ class MainActivity : AppCompatActivity(), OnGestureListener, OnDoubleTapListener
      * overridden from the OnDoubleTapListener
      */
     override fun onDoubleTapEvent(event: MotionEvent): Boolean {
-        Toast.makeText(applicationContext, "onDoubleTapEvent: $event", Toast.LENGTH_SHORT).show()
-        Log.d(TAG, "onDoubleTapEvent: $event")
+        logthis("onDoubleTapEvent: $event")
         return true
     }
 
@@ -173,11 +163,12 @@ class MainActivity : AppCompatActivity(), OnGestureListener, OnDoubleTapListener
      * overridden from the OnDoubleTapListener
      */
     override fun onSingleTapConfirmed(event: MotionEvent): Boolean {
-        Toast.makeText(applicationContext, "onSingleTapConfirmed: $event", Toast.LENGTH_SHORT)
-            .show()
-        Log.d(TAG, "onSingleTapConfirmed: $event")
+        logthis("onSingleTapConfirmed: $event")
         return true
     }
 
-
+    private fun logthis(item: String) {
+        Toast.makeText(applicationContext, "onSingleTapConfirmed: $item", Toast.LENGTH_SHORT).show()
+        Log.d(TAG, item)
+    }
 }
