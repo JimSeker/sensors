@@ -6,7 +6,10 @@ import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Build
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import edu.cs4730.pitchroll3_tk.databinding.ActivityMainBinding
 import java.util.Locale
 
@@ -35,7 +38,11 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v: View, insets: WindowInsetsCompat ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            WindowInsetsCompat.CONSUMED
+        }
         mgr = this.getSystemService(SENSOR_SERVICE) as SensorManager
         accel = mgr.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
         compass = mgr.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD)

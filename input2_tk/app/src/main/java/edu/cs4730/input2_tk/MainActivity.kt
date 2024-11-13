@@ -7,9 +7,12 @@ import android.view.GestureDetector.OnDoubleTapListener
 import android.view.GestureDetector.OnGestureListener
 import android.view.KeyEvent
 import android.view.MotionEvent
+import android.view.View
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import edu.cs4730.input2_tk.databinding.ActivityMainBinding
 
 /**
@@ -41,7 +44,11 @@ class MainActivity : AppCompatActivity(), OnGestureListener, OnDoubleTapListener
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v: View, insets: WindowInsetsCompat ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            WindowInsetsCompat.CONSUMED
+        }
         // Instantiate the gesture detector with the application context and an implementation of GestureDetector.OnGestureListener
         mDetector = GestureDetector(this, this)
         // Also Set the gesture detector as the double tap  listener.  See the overrides below for which events comes from which.
