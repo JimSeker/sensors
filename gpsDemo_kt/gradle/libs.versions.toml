@@ -1,0 +1,17 @@
+[versions]
+activityKtx = "1.13.0"
+agp = "9.4.0"
+coreKtx = "1.19.0"
+appcompat = "1.8.0"
+constraintlayout = "2.2.2"
+material = "1.14.0"
+
+[libraries]
+androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activityKtx" }
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+material = { module = "com.google.android.material:material", version.ref = "material" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
