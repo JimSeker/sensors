@@ -1,8 +1,8 @@
-pluginManagement {
+﻿pluginManagement {
     repositories {
-        gradlePluginPortal()
         google()
         mavenCentral()
+        gradlePluginPortal()
     }
 }
 dependencyResolutionManagement {
@@ -12,5 +12,5 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "NFCreadDemo"
-include ':app'
+rootProject.name = "pitchroll2"
+include(":app")

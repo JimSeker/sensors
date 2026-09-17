@@ -31,7 +31,7 @@ import edu.cs4730.nfcreadwritedemo.databinding.ActivityMainBinding;
  *   it could easily to be changed to onResume and onPause, instead of start/stop buttons.
  *
  *   there is are 2 writers writetag() is the older method.  it works just fine.
- *   writetag2() is a newer method is writes out en, and the text.  either work just fine.
+ *   writetag2() is a newer method which writes out en, and the text.  either work just fine.
  *
  *   these all assume a nfcA tag is used, I think. well that's what I own, so I don't know if
  *   about the other tags.

@@ -18,7 +18,7 @@ import edu.cs4730.pitchroll3.databinding.ActivityMainBinding;
 
 /**
  * http://stackoverflow.com/questions/9454948/android-pitch-and-roll-issue
- * modified to remove the Orientation sensor that google dec in api 9.
+ * modified to remove the Orientation sensor that Google dec in api 9.
  */
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
@@ -60,11 +60,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
 
     public int rotationInfo() {
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
-            return getDisplay().getRotation();
-        } else {
-            return getWindowManager().getDefaultDisplay().getRotation();
-        }
+
+        //api 32 and above
+        return getDisplay().getRotation();
+
+        //api below 32
+        //return getWindowManager().getDefaultDisplay().getRotation();
+
     }
 
     @Override

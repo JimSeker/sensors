@@ -1,3 +1,10 @@
+﻿pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
@@ -6,4 +13,4 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "pitchroll3_tk"
-include ':app'
+include(":app")
